@@ -174,9 +174,3 @@ void moveAroundFiles(std::string forwardOrBackward){
 		showFiles(file.parent_path());
 	}
 }
-
-int generateStopOutput(){
-	struct winsize WindowSize;
-	ioctl(STDOUT_FILENO, TIOCGWINSZ, &WindowSize);
-	return round(WindowSize.ws_col/2);
-}
