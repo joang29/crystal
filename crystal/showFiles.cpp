@@ -1,3 +1,4 @@
+#include <cstddef>
 #include <cstdio>
 #include<string>
 #include<iostream>
@@ -11,6 +12,7 @@
 
 #include "functions.h"
 
+std::string terminal = "";
 int numberOfFileChosen = 1;
 int stopOutput = 10;
 std::string actualDirectory;
@@ -20,9 +22,12 @@ void showFiles(std::string);
 void showPreviews(std::string);
 void changeFileChosen(bool);
 void moveAroundFiles(std::string);
+std::string determineTerminal();
 
 void showFiles(std::string directory){
 	system("clear");
+	
+	if(terminal == "") terminal = determineTerminal();
 
 	int i = 0;
 	std::array<bool,4> settings = returnSettings();
@@ -142,8 +147,12 @@ void showPreviews(std::string preview){
 		std::cout<<"\033["<<2<<";0f";
 		std::cout<<"\r\t\t\t\t\t\t\033[1;93mImage preview:\033[0m"<<std::endl;
 		std::cout<<"\r\t\t\t\t\t\t\033[1;31mProcessing...\033[0m"<<std::endl;
-		
-		system(("kitty icat --place 60x60@48x2 " + fileChosen).c_str());
+				
+		if(terminal == "kitty") system(("kitty icat --place 60x60@48x2 '" + fileChosen + "'").c_str());
+		else{
+			system("tput cup 20 0");
+			system(("echo -e '0;1;288;28;350;200;;;;;" + fileChosen + "\n4;\n3;' | /usr/lib/w3m/w3mimgdisplay").c_str());	
+		}
 	}
 }
 
@@ -173,4 +182,13 @@ void moveAroundFiles(std::string forwardOrBackward){
 		std::experimental::filesystem::path file = actualDirectory;
 		showFiles(file.parent_path());
 	}
+}
+
+std::string determineTerminal(){
+	FILE *outputFile;
+	char output[6];
+
+	outputFile = popen("ps -o 'cmd=' -p $(ps -o 'ppid=')", "r");
+	fgets(output, 6, outputFile);
+	return output;
 }

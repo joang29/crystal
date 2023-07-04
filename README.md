@@ -4,7 +4,7 @@
 
 # Dependencies 🗃:
 - [Nerd Font](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/Iosevka)
-- **kitty** / **w3m** 
+- **kitty** / **w3mimgdisplay** 
 
 # Installation
 Before installing crystal-fm, please make sure you have all dependencies installed.
@@ -22,4 +22,3 @@ sudo make install
 |                `e`               | Return to file manager                                    |
 |              `space`             | (Only available in settings) activate/deactivate settings |
 |                `x`               | Close file manager                                        |
-
