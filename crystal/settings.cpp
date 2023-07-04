@@ -1,14 +1,11 @@
 #include "functions.h"
-#include <array>
-#include <cstdio>
-#include <cstdlib>
 #include<iostream>
 #include<fstream>
 
 void showSettings();
 void moveAroundSettings(bool);
 void changeSettings();
-void manageSettings();
+void createSettings();
 std::array<bool, 4> returnSettings();
 
 int selectedSetting = 0;
@@ -16,7 +13,7 @@ int selectedSetting = 0;
 void showSettings(){
 	system("clear");
 
-	manageSettings();
+	createSettings();
 	
 	std::array<bool, 4> settings = returnSettings();
 	std::array<std::string, 4> settingOptions;
@@ -59,7 +56,7 @@ void changeSettings(){
 	showSettings();
 }
 
-void manageSettings(){
+void createSettings(){
 	std::ifstream settingsFile(std::string(getenv("HOME"))+"/.config/crystal/crystal.conf");
 	if(!settingsFile.is_open()){
 		std::ofstream creatingSettingsFile(std::string(getenv("HOME"))+"/.config/crystal/crystal.conf");
@@ -72,7 +69,7 @@ void manageSettings(){
 std::array<bool, 4> returnSettings(){
 	std::array<bool, 4> settings;
 	
-	manageSettings();
+	createSettings();
 
 	std::ifstream settingsFile(std::string(getenv("HOME"))+"/.config/crystal/crystal.conf");
 	

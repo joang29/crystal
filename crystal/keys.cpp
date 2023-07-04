@@ -1,4 +1,3 @@
-#include<iostream>
 #include "functions.h"
 
 std::string actualInterface = "directories";

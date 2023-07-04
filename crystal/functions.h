@@ -4,13 +4,16 @@
 #include<string>
 #include<array>
 
+//keys.cpp
+void keys();
+
 //showFiles.cpp
 void showFiles(std::string);
 void changeFileChosen(bool);
 void moveAroundFiles(std::string);
 
-//keys.cpp
-void keys();
+//showPreviews.cpp
+void showPreviews(std::string, std::string);
 
 //settings.cpp
 void showSettings();

@@ -1,34 +1,24 @@
-#include <cstddef>
-#include <cstdio>
-#include<string>
 #include<iostream>
-#include<unistd.h>
 #include<experimental/filesystem>
 #include<sys/stat.h>
-#include<string.h>
 #include<fstream>
-#include<sys/ioctl.h>
 #include<math.h>
+#include<string.h>
 
 #include "functions.h"
 
-std::string terminal = "";
+void showFiles(std::string);
+void changeFileChosen(bool);
+void moveAroundFiles(std::string);
+
 int numberOfFileChosen = 1;
 int stopOutput = 10;
 std::string actualDirectory;
 std::string fileChosen;
 
-void showFiles(std::string);
-void showPreviews(std::string);
-void changeFileChosen(bool);
-void moveAroundFiles(std::string);
-std::string determineTerminal();
-
 void showFiles(std::string directory){
 	system("clear");
 	
-	if(terminal == "") terminal = determineTerminal();
-
 	int i = 0;
 	std::array<bool,4> settings = returnSettings();
 
@@ -101,59 +91,10 @@ void showFiles(std::string directory){
 		outputFile = popen(("file '" + fileChosen + "'").c_str(), "r");
 		fgets(output, sizeof(output), outputFile);
 		
-		if(strstr(output, "text") && settings[1]) showPreviews("textFiles");
-		else if(strstr(output, "image") && settings[3]) showPreviews("images");
+		if(strstr(output, "text") && settings[1]) showPreviews("textFiles", fileChosen);
+		else if(strstr(output, "image") && settings[3]) showPreviews("images", fileChosen);
 
-	}else if(s.st_mode & S_IFDIR && settings[2]) showPreviews("directory");
-}
-void showPreviews(std::string preview){
-	int i = 0;
-		
-	if(preview == "directory"){
-		std::array<bool,4> settings = returnSettings();
-
-		std::cout<<"\033["<<2<<";0f";
-		std::cout<<"\r\t\t\t\t\t\t\033[1;93mDirectory preview:\033[0m"<<std::endl;
-
-		for(const auto & entry : std::experimental::filesystem::directory_iterator(fileChosen)){
-			if(!settings[0] && (entry.path().filename().string())[0] == '.') continue;
-			
-			std::cout<<"\033["<<3+i<<";0f";
-	
-			std::cout<<"\r\t\t\t\t\t\t"<<entry.path().filename().string()<<std::endl;
-			i++;
-			if(i>10) break;
-		}
-		if(i==0){
-			std::cout<<"\033["<<3<<";0f";
-			std::cout<<"\r\t\t\t\t\t\t\033[1;31mempty\033[0m"<<std::endl;
-		}
-	}else if(preview == "textFiles"){
-		std::cout<<"\033["<<2<<";0f";
-		std::cout<<"\r\t\t\t\t\t\t\033[1;93mFile preview:\033[0m"<<std::endl;
-
-		std::ifstream file(fileChosen);
-		while(file.eof()==0){
-			std::string line;
-			getline(file, line);
-			
-			std::cout<<"\033["<<3+i<<";0f";		
-			
-			std::cout<<"\r\t\t\t\t\t\t"<<line<<std::endl;
-			i++;
-			if(i>10) break;
-		}
-	}else if(preview == "images"){
-		std::cout<<"\033["<<2<<";0f";
-		std::cout<<"\r\t\t\t\t\t\t\033[1;93mImage preview:\033[0m"<<std::endl;
-		std::cout<<"\r\t\t\t\t\t\t\033[1;31mProcessing...\033[0m"<<std::endl;
-				
-		if(terminal == "kitty") system(("kitty icat --place 60x60@48x2 '" + fileChosen + "'").c_str());
-		else{
-			system("tput cup 20 0");
-			system(("echo -e '0;1;288;28;350;200;;;;;" + fileChosen + "\n4;\n3;' | /usr/lib/w3m/w3mimgdisplay").c_str());	
-		}
-	}
+	}else if(s.st_mode & S_IFDIR && settings[2]) showPreviews("directory", fileChosen);
 }
 
 void changeFileChosen(bool up){
@@ -182,13 +123,4 @@ void moveAroundFiles(std::string forwardOrBackward){
 		std::experimental::filesystem::path file = actualDirectory;
 		showFiles(file.parent_path());
 	}
-}
-
-std::string determineTerminal(){
-	FILE *outputFile;
-	char output[6];
-
-	outputFile = popen("ps -o 'cmd=' -p $(ps -o 'ppid=')", "r");
-	fgets(output, 6, outputFile);
-	return output;
 }
