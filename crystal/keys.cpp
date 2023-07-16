@@ -48,6 +48,9 @@ void keys(){
 			          }
 			break;
 		
+			case 'R':
+			case 'r': if(actualInterface == "directories") searchBar();
+			break;
 
 			case 'X':
 			case 'x': system("stty cooked | clear");

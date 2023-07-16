@@ -11,6 +11,7 @@ void keys();
 void showFiles(std::string);
 void changeFileChosen(bool);
 void moveAroundFiles(std::string);
+void searchBar();
 
 //showPreviews.cpp
 void showPreviews(std::string, std::string);

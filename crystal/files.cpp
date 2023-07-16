@@ -15,6 +15,7 @@ int numberOfFileChosen = 1;
 int stopOutput = 10;
 std::string actualDirectory;
 std::string fileChosen;
+std::string input = "";
 
 void showFiles(std::string directory){
 	system("clear");
@@ -27,8 +28,9 @@ void showFiles(std::string directory){
 
 	for(const auto & entry : std::experimental::filesystem::directory_iterator(directory)){	
 		i++;
-		
-		if(!settings[0] && (entry.path().filename().string())[0] == '.'){
+
+		if(!settings[0] && (entry.path().filename().string())[0] == '.' || 
+		   !input.empty() && entry.path().filename().string().find(input) == std::string::npos){
 			i--;
 			continue;
 		}
@@ -36,8 +38,6 @@ void showFiles(std::string directory){
 		
 		std::string filename = entry.path().filename().string();
 	
-		if(filename.length() > 30) filename = filename.substr(0,30) + "...";
-
 		if(numberOfFileChosen == i){
 			std::cout<<"\033[1;95m\r > "<<filename<<"\033[0m"<<std::endl;
 			
@@ -51,7 +51,7 @@ void showFiles(std::string directory){
 	
 	if(i==0){
 	 	std::cout<<"\033["<<3<<";0f";
-		std::cout<<"\033[1;31m\r  empty \033[0m";
+		input == "" ? std::cout<<"\033[1;31m\r  empty \033[0m" : std::cout<<"\033[1;31m\r  Nothing found \033[0m";
 		return;
 	}
 	if(numberOfFileChosen>i){
@@ -123,4 +123,24 @@ void moveAroundFiles(std::string forwardOrBackward){
 		std::experimental::filesystem::path file = actualDirectory;
 		showFiles(file.parent_path());
 	}
+}
+
+void searchBar(){
+	std::cout<<"\033["<<17<<";0f";
+	std::cout<<"\033[2K";
+	std::cout<<"\r\033[38;5;15m   :search \033[0m\033[38;5;5m";
+	
+	system("stty cooked");
+
+	std::cin>>input;
+	
+	system("stty raw");
+
+	numberOfFileChosen = 1;
+	showFiles(actualDirectory);
+
+	std::cout<<"\033["<<17<<";0f";
+	std::cout<<"\r\033[38;5;15m   :search \033[0m\033[38;5;5m"<<input<<"\033[0m";
+
+	input = "";
 }

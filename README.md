@@ -11,7 +11,10 @@ Before installing crystal-fm, please make sure you have all dependencies install
 
 To install crystal-fm run:
 ```
-sudo make install
+git clone https://github.com/joang29/crystal-FM
+cd crystal-FM/crystal
+g++ * -o crystalfm -lstdc++fs
+sudo install -Dm 775 crystalfm /usr/local/bin
 ```
 
 # Usage
@@ -20,5 +23,6 @@ sudo make install
 | `h` `j` `k` `l` / `w` `a` `s` `d`| Navigate                                                  |
 |                `q`               | Open Settings                                             |
 |                `e`               | Return to file manager                                    |
+|                `r`               | Open search bar                                           |
 |              `space`             | (Only available in settings) activate/deactivate settings |
 |                `x`               | Close file manager                                        |
