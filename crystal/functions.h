@@ -14,6 +14,11 @@ void moveAroundFiles(std::string);
 void searchBar();
 void renameFile();
 void deleteFile();
+void copyFile();
+void pasteFile();
+void makeDir();
+void createFile();
+
 //showPreviews.cpp
 void showPreviews(std::string, std::string);
 

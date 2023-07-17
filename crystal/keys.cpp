@@ -23,8 +23,8 @@ void keys(){
 			case 'h': if(actualInterface == "directories") moveAroundFiles("backward");
 			break;
 			
-			case 'A':
-			case 'a': if(actualInterface == "directories"){
+			case 'Y':
+			case 'y': if(actualInterface == "directories"){
 				  	showSettings();
 				  	actualInterface = "settings";
 				  }
@@ -33,8 +33,8 @@ void keys(){
 			case ' ': if(actualInterface == "settings") changeSettings();
 			break;
 
-			case 'S':
-			case 's': if(actualInterface == "settings"){
+			case 'U':
+			case 'u': if(actualInterface == "settings"){
 				  	showFiles(getenv("HOME"));
 				  	actualInterface = "directories";
 			          }
@@ -51,9 +51,25 @@ void keys(){
 			case 'Z':
 			case 'z': if(actualInterface == "directories") deleteFile();
 			break;
-
+			
+			case 'C':
+			case 'c': if(actualInterface == "directories") copyFile();
+			break;
+			
+			case 'V':
+			case 'v': if(actualInterface == "directories") pasteFile();
+			break;
+			
 			case 'X':
-			case 'x': system("stty cooked | clear");
+			case 'x': if(actualInterface == "directories") makeDir();
+			break;
+
+			case 'A':
+			case 'a': if(actualInterface == "directories") createFile();
+			break;
+
+			case 'Q':
+			case 'q': system("stty cooked | clear");
 				  exit(0);
 			break;
 		}

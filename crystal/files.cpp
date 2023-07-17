@@ -13,13 +13,13 @@ void changeFileChosen(bool);
 void moveAroundFiles(std::string);
 void searchBar();
 void renameFile();
+void copyFile();
+void pasteFile();
 void commandLine(std::string, std::string *);
 
 int numberOfFileChosen = 1;
 int stopOutput = 10;
-std::string actualDirectory;
-std::string fileChosen;
-std::string inputSearch = "";
+std::string actualDirectory, fileChosen, selectedFilename, inputSearch = "", copiedFile, copiedFilename;
 
 void showFiles(std::string directory){
 	system("clear");
@@ -28,7 +28,6 @@ void showFiles(std::string directory){
 	std::array<bool,4> settings = returnSettings();
 
 	std::cout<<"\033[1;94m  "<<directory<<"\033[0m\n\n";
-	std::string selectedFilename;
 
 	for(const auto & entry : std::experimental::filesystem::directory_iterator(directory)){	
 		i++;
@@ -157,19 +156,67 @@ void renameFile(){
 
 void deleteFile(){
 	std::string Delete;
-	
-	std::regex removePath("[" + actualDirectory + "]");
-	std::string filename = std::regex_replace(fileChosen, removePath, "");
-	
-	commandLine("Delete '" + filename + "' [Y/n]", &Delete);
+	std::string fileToRemove = selectedFilename;
+	commandLine("Delete '" + fileToRemove + "' [Y/n]", &Delete);
 	
 	if(Delete=="n" || Delete=="N") return;
+
+	struct stat s;
+	stat(fileChosen.c_str(), &s);
+
+	if(s.st_mode & S_IFDIR) std::experimental::filesystem::remove_all(fileChosen);
+	else std::experimental::filesystem::remove(fileChosen);
 	
-	std::experimental::filesystem::remove(fileChosen);
+	showFiles(actualDirectory);
+
 	std::cout<<"\033["<<17<<";0f";
 	std::cout<<"\033[2K";
-	std::cout<<"\r   '"<<filename<<"' removed";
+	std::cout<<"\r\033[38;5;5m   '"<<fileToRemove<<"'\033[0m removed";
 }
+
+void copyFile(){
+	std::cout<<"\033[17;0f\033[38;5;5m   Copying... \033[0m(Press 'v' to paste the file)";
+	copiedFile = fileChosen;
+	copiedFilename = selectedFilename;
+}
+
+void pasteFile(){
+	if(copiedFile == ""){
+		std::cout<<"\033[17;0f\033[1;31m   No file copied\033[0m";
+		return;
+	}
+	
+	struct stat s;
+	stat(copiedFile.c_str(), &s);
+
+	try{
+		if(s.st_mode & S_IFDIR)	std::experimental::filesystem::copy(copiedFile, actualDirectory + "/" + copiedFilename, std::experimental::filesystem::copy_options::recursive);
+		else std::experimental::filesystem::copy(copiedFile, actualDirectory + "/");
+	}catch(std::experimental::filesystem::__cxx11::filesystem_error){
+		std::cout<<"\033[17;0f\033[1;31m   An error occurred while pasting the file\033[0m";
+	}
+
+	showFiles(actualDirectory);
+}
+
+void makeDir(){
+	std::string dirName;
+	commandLine("mkdir", &dirName);
+	mkdir((actualDirectory + "/" + dirName).c_str(), 0777);
+	std::cout<<"\033[17;0f\033[38;5;5m"<<dirName<<"\033[0m"<<" successfully created";
+}
+
+void createFile(){
+	std::string filename;
+	
+	commandLine("file", &filename);
+	
+	std::ofstream file(actualDirectory + "/" + filename);
+	file.close();
+	
+	showFiles(actualDirectory); 
+}
+
 
 void commandLine(std::string command, std::string *result){
 	std::cout<<"\033["<<17<<";0f";
