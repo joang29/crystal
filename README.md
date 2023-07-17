@@ -20,9 +20,11 @@ sudo install -Dm 775 crystalfm /usr/local/bin
 # Usage
 |               Keys               | Function                                                  |
 |:--------------------------------:|-----------------------------------------------------------|
-| `h` `j` `k` `l` / `w` `a` `s` `d`| Navigate                                                  |
-|                `q`               | Open Settings                                             |
-|                `e`               | Return to file manager                                    |
-|                `r`               | Open search bar                                           |
+|          `h` `j` `k` `l`         | Navigate                                                  |
+|                `a`               | Open Settings                                             |
 |              `space`             | (Only available in settings) activate/deactivate settings |
+|                `s`               | Return to file manager                                    |
+|                `d`               | Open search bar                                           |
+|                `f`               | Rename file                                               |
+|                `z`               | Delete file                                               |
 |                `x`               | Close file manager                                        |

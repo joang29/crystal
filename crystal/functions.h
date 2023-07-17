@@ -12,7 +12,8 @@ void showFiles(std::string);
 void changeFileChosen(bool);
 void moveAroundFiles(std::string);
 void searchBar();
-
+void renameFile();
+void deleteFile();
 //showPreviews.cpp
 void showPreviews(std::string, std::string);
 

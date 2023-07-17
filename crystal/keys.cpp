@@ -8,31 +8,23 @@ void keys(){
 
 		switch(keyPressed){
 			case 'J':
-			case 'j':
-			case 'S':
-			case 's': actualInterface == "directories" ? changeFileChosen(false) : moveAroundSettings(false);
+			case 'j': actualInterface == "directories" ? changeFileChosen(false) : moveAroundSettings(false);
 			break;
 
 			case 'K':
-			case 'k':
-			case 'W':
-			case 'w': actualInterface == "directories" ? changeFileChosen(true) : moveAroundSettings(true);
+			case 'k': actualInterface == "directories" ? changeFileChosen(true) : moveAroundSettings(true);
 			break;
 			
 			case 'L':
-			case 'l':
-			case 'D':
-			case 'd': if(actualInterface == "directories") moveAroundFiles("forward");
+			case 'l': if(actualInterface == "directories") moveAroundFiles("forward");
 			break;
 
 			case 'H':
-			case 'h':
-			case 'A':
-			case 'a': if(actualInterface == "directories") moveAroundFiles("backward");
+			case 'h': if(actualInterface == "directories") moveAroundFiles("backward");
 			break;
 			
-			case 'Q':
-			case 'q': if(actualInterface == "directories"){
+			case 'A':
+			case 'a': if(actualInterface == "directories"){
 				  	showSettings();
 				  	actualInterface = "settings";
 				  }
@@ -41,15 +33,23 @@ void keys(){
 			case ' ': if(actualInterface == "settings") changeSettings();
 			break;
 
-			case 'E':
-			case 'e': if(actualInterface == "settings"){
+			case 'S':
+			case 's': if(actualInterface == "settings"){
 				  	showFiles(getenv("HOME"));
 				  	actualInterface = "directories";
 			          }
 			break;
 		
-			case 'R':
-			case 'r': if(actualInterface == "directories") searchBar();
+			case 'D':
+			case 'd': if(actualInterface == "directories") searchBar();
+			break;
+			
+			case 'F':
+			case 'f': if(actualInterface == "directories") renameFile();
+			break;
+			
+			case 'Z':
+			case 'z': if(actualInterface == "directories") deleteFile();
 			break;
 
 			case 'X':

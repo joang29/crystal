@@ -4,18 +4,22 @@
 #include<fstream>
 #include<math.h>
 #include<string.h>
+#include<regex>
 
 #include "functions.h"
 
 void showFiles(std::string);
 void changeFileChosen(bool);
 void moveAroundFiles(std::string);
+void searchBar();
+void renameFile();
+void commandLine(std::string, std::string *);
 
 int numberOfFileChosen = 1;
 int stopOutput = 10;
 std::string actualDirectory;
 std::string fileChosen;
-std::string input = "";
+std::string inputSearch = "";
 
 void showFiles(std::string directory){
 	system("clear");
@@ -30,7 +34,7 @@ void showFiles(std::string directory){
 		i++;
 
 		if(!settings[0] && (entry.path().filename().string())[0] == '.' || 
-		   !input.empty() && entry.path().filename().string().find(input) == std::string::npos){
+		   !inputSearch.empty() && entry.path().filename().string().find(inputSearch) == std::string::npos){
 			i--;
 			continue;
 		}
@@ -51,7 +55,7 @@ void showFiles(std::string directory){
 	
 	if(i==0){
 	 	std::cout<<"\033["<<3<<";0f";
-		input == "" ? std::cout<<"\033[1;31m\r  empty \033[0m" : std::cout<<"\033[1;31m\r  Nothing found \033[0m";
+		inputSearch == "" ? std::cout<<"\033[1;31m\r  empty \033[0m" : std::cout<<"\033[1;31m\r  Nothing found \033[0m";
 		return;
 	}
 	if(numberOfFileChosen>i){
@@ -112,6 +116,8 @@ void changeFileChosen(bool up){
 void moveAroundFiles(std::string forwardOrBackward){
 	numberOfFileChosen = 1;
 	stopOutput = 10;
+	inputSearch = "";
+	
 	if(forwardOrBackward == "forward"){
 		struct stat s;
 		stat(fileChosen.c_str(), &s);
@@ -126,21 +132,53 @@ void moveAroundFiles(std::string forwardOrBackward){
 }
 
 void searchBar(){
-	std::cout<<"\033["<<17<<";0f";
-	std::cout<<"\033[2K";
-	std::cout<<"\r\033[38;5;15m   :search \033[0m\033[38;5;5m";
-	
-	system("stty cooked");
-
-	std::cin>>input;
-	
-	system("stty raw");
-
 	numberOfFileChosen = 1;
+	
+	commandLine("search", &inputSearch);
+
 	showFiles(actualDirectory);
 
 	std::cout<<"\033["<<17<<";0f";
-	std::cout<<"\r\033[38;5;15m   :search \033[0m\033[38;5;5m"<<input<<"\033[0m";
+	std::cout<<"\r\033[38;5;15m   :search \033[0m\033[38;5;5m"<<inputSearch<<"\033[0m";
+}
 
-	input = "";
+void renameFile(){
+	std::string newName;
+	
+	commandLine("rename", &newName);
+
+	std::experimental::filesystem::rename(fileChosen, actualDirectory + "/" + newName);
+	
+	showFiles(actualDirectory);
+
+	std::cout<<"\033["<<17<<";0f";
+	std::cout<<"\r\033[38;5;15m   :rename \033[0m\033[38;5;5m"<<inputSearch<<"\033[0m";
+}
+
+void deleteFile(){
+	std::string Delete;
+	
+	std::regex removePath("[" + actualDirectory + "]");
+	std::string filename = std::regex_replace(fileChosen, removePath, "");
+	
+	commandLine("Delete '" + filename + "' [Y/n]", &Delete);
+	
+	if(Delete=="n" || Delete=="N") return;
+	
+	std::experimental::filesystem::remove(fileChosen);
+	std::cout<<"\033["<<17<<";0f";
+	std::cout<<"\033[2K";
+	std::cout<<"\r   '"<<filename<<"' removed";
+}
+
+void commandLine(std::string command, std::string *result){
+	std::cout<<"\033["<<17<<";0f";
+	std::cout<<"\033[2K";
+	std::cout<<"\r\033[38;5;15m   :"<<command<<" \033[0m\033[38;5;5m";	
+
+	system("stty cooked");
+
+	std::cin>>*result;
+	
+	system("stty raw");
 }
