@@ -1,11 +1,12 @@
 #include<sys/stat.h>
 #include<unistd.h>
+#include<fstream>
 
 #include "functions.h"
 
 int main(){
 	system("stty raw");
-
+	
 	struct stat checkIfDirExists;
 	std::string home = getenv("HOME");
 	

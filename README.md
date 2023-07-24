@@ -23,10 +23,12 @@ rm crystalfm
 |          `h` `j` `k` `l`         | Navigate                                                  |
 |                `y`               | Open Settings                                             |
 |              `space`             | (Only available in settings) activate/deactivate settings |
-|                `u`               | Return to file manager                                    |
+|                `Y`               | Return to file manager                                    |
 |                `d`               | Open search bar                                           |
-|                `a`               | Create file                                               |
-|                `x`               | Create dir                                                |
+|                `z`               | Select files                                              |
+|                `c`               | Copy file                                                 |
+|                `s`               | Create file                                               |
+|                `S`               | Create dir                                                |
 |                `f`               | Rename file                                               |
-|                `z`               | Delete file                                               |
+|                `X`               | Delete file                                               |
 |                `q`               | Close file manager                                        |

@@ -18,6 +18,8 @@ void copyFile();
 void pasteFile();
 void makeDir();
 void createFile();
+void selectFiles();
+void cancelSelectFiles();
 
 //showPreviews.cpp
 void showPreviews(std::string, std::string);
