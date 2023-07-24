@@ -11,18 +11,20 @@ Before installing crystal-fm, please make sure you have all dependencies install
 
 To install crystal-fm run:
 ```
-git clone https://github.com/joang29/crystal-FM
-g++ crystal-FM/crystal/* -o crystalfm -lstdc++fs
-sudo install -Dm 775 crystalfm /usr/local/bin
-rm crystalfm
+make install
+```
+
+# Configuration
+
+To configure crystalfm you should edit the files, ``config.h`` for general use and ``keys.h`` to modify the keys to your liking (if you have previously installed crystalfm they will be located in ``~/.config/crystal/`` but if not they will be inside the ``crystal-FM/crystal/`` directory), when you finish configuring in the crystal-FM directory run:
+```
+make config
 ```
 
 # Usage
 |               Keys               | Function                                                  |
 |:--------------------------------:|-----------------------------------------------------------|
 |          `h` `j` `k` `l`         | Navigate                                                  |
-|                `y`               | Open Settings                                             |
-|                `Y`               | Return to file manager                                    |
 |                `d`               | Open search bar                                           |
 |                `z`               | Select files                                              |
 |                `c`               | Copy file                                                 |

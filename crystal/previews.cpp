@@ -2,7 +2,9 @@
 #include<string.h>
 #include<experimental/filesystem>
 #include<fstream>
+
 #include "functions.h"
+#include "config.h"
 
 void showPreviews(std::string, std::string);
 std::string determineTerminal();
@@ -13,13 +15,12 @@ void showPreviews(std::string preview, std::string fileChosen){
 	std::string terminal = determineTerminal();
 
 	if(preview == "directory"){
-		std::array<bool,4> settings = returnSettings();
 
 		std::cout<<"\033["<<2<<";0f";
 		std::cout<<"\r\t\t\t\t\t\t\033[1;93mDirectory preview:\033[0m"<<std::endl;
 
 		for(const auto & entry : std::experimental::filesystem::directory_iterator(fileChosen)){
-			if(!settings[0] && (entry.path().filename().string())[0] == '.') continue;
+			if(HIDDEN_FILES==1 && (entry.path().filename().string())[0] == '.') continue;
 			
 			std::cout<<"\033["<<3+i<<";0f";
 	

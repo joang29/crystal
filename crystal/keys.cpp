@@ -1,4 +1,5 @@
 #include "functions.h"
+#include "keys.h"
 
 std::string actualInterface = "directories";
 
@@ -8,61 +9,46 @@ void keys(){
 		char keyPressed = getchar();
 
 		switch(keyPressed){
-			case 'j': actualInterface == "directories" ? changeFileChosen(false) : moveAroundSettings(false);
+			case MOVE_DOWN: changeFileChosen(false);
 			break;
 
-			case 'k': actualInterface == "directories" ? changeFileChosen(true) : moveAroundSettings(true);
+			case MOVE_UP: changeFileChosen(true);
 			break;
 			
-			case 'l': if(actualInterface == "directories") moveAroundFiles("forward");
+			case MOVE_RIGHT: moveAroundFiles("forward");
 			break;
 
-			case 'h': if(actualInterface == "directories") moveAroundFiles("backward");
+			case MOVE_LEFT: moveAroundFiles("backward");
+			break;
+
+			case SEARCH: searchBar();
 			break;
 		
-			case 'y': if(actualInterface == "directories"){
-				  	showSettings();
-				  	actualInterface = "settings";
-				  }
+			case RENAME_FILE: renameFile();
 			break;
 			
-			case ' ': if(actualInterface == "settings") changeSettings();
+			case MOVE_FILE: moveFile();
 			break;
 
-			case 'Y': if(actualInterface == "settings"){
-				  	showFiles(getenv("HOME"));
-				  	actualInterface = "directories";
-			          }
+			case DELETE_FILE: deleteFile();
 			break;
 		
-			case 'd': if(actualInterface == "directories") searchBar();
-			break;
-		
-			case 'f': if(actualInterface == "directories") renameFile();
+			case COPY_FILE: copyFile();
 			break;
 			
-			case 'x': if(actualInterface == "directories") moveFile();
+			case PASTE_FILE: pasteFile();
+			break;
+			
+			case CREATE_DIR: makeDir();
 			break;
 
-			case 'X': if(actualInterface == "directories") deleteFile();
-			break;
-		
-			case 'c': if(actualInterface == "directories") copyFile();
+			case CREATE_FILE: createFile();
 			break;
 			
-			case 'C': if(actualInterface == "directories") pasteFile();
+			case SELECT_FILE: selectFiles();
 			break;
 			
-			case 'S': if(actualInterface == "directories") makeDir();
-			break;
-
-			case 's': if(actualInterface == "directories") createFile();
-			break;
-			
-			case 'z': if(actualInterface == "directories") selectFiles();
-			break;
-			
-			case 'Z': if(actualInterface == "directories") cancelSelectFiles();
+			case CANCEL_SELECT_FILE: cancelSelectFiles();
 			break;
 
 			case 'q': system("stty cooked | clear");

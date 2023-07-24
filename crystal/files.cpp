@@ -7,6 +7,7 @@
 #include<regex>
 
 #include "functions.h"
+#include "config.h"
 
 void showFiles(std::string);
 void changeFileChosen(bool);
@@ -28,7 +29,6 @@ void showFiles(std::string directory){
 	system("clear");
 
 	int i = 0;
-	std::array<bool,4> settings = returnSettings();
 	bool validEntry = false;
 
 	std::cout<<"\033[1;94m  "<<directory<<"\033[0m\n\n";
@@ -36,7 +36,7 @@ void showFiles(std::string directory){
 	for(const auto & entry : std::experimental::filesystem::directory_iterator(directory)){	
 		i++;
 
-		if(!settings[0] && (entry.path().filename().string())[0] == '.' || 
+		if(HIDDEN_FILES==1 && (entry.path().filename().string())[0] == '.' || 
 				!inputSearch.empty() && entry.path().filename().string().find(inputSearch) == std::string::npos){
 			i--;
 			continue;
@@ -104,10 +104,10 @@ void showFiles(std::string directory){
 		outputFile = popen(("file '" + fileChosen.string() + "'").c_str(), "r");
 		fgets(output, sizeof(output), outputFile);
 
-		if(strstr(output, "text") && settings[1]) showPreviews("textFiles", fileChosen);
-		else if(strstr(output, "image") && settings[3]) showPreviews("images", fileChosen);
+		if(strstr(output, "text") && PREVIEW_FILES) showPreviews("textFiles", fileChosen);
+		else if(strstr(output, "image") && PREVIEW_IMAGES) showPreviews("images", fileChosen);
 
-	}else if(s.st_mode & S_IFDIR && settings[2]) showPreviews("directory", fileChosen);
+	}else if(s.st_mode & S_IFDIR && PREVIEW_DIRECTORIES) showPreviews("directory", fileChosen);
 }
 
 void changeFileChosen(bool up){

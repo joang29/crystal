@@ -26,8 +26,6 @@ void cancelSelectFiles();
 void showPreviews(std::string, std::string);
 
 //settings.cpp
-void showSettings();
-void moveAroundSettings(bool);
-void changeSettings();
+void createSettings();
 std::array<bool, 4> returnSettings();
 #endif
