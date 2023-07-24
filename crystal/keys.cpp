@@ -41,6 +41,9 @@ void keys(){
 			case 'f': if(actualInterface == "directories") renameFile();
 			break;
 			
+			case 'x': if(actualInterface == "directories") moveFile();
+			break;
+
 			case 'X': if(actualInterface == "directories") deleteFile();
 			break;
 		

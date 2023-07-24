@@ -20,7 +20,7 @@ void commandLine(std::string, std::string *);
 int numberOfFileChosen = 1, stopOutput = 10;
 std::string actualDirectory, selectedFilename, inputSearch = "";
 std::experimental::filesystem::path fileChosen;
-std::vector<std::experimental::filesystem::directory_entry> filesSelected,  copiedFile;
+std::vector<std::experimental::filesystem::directory_entry> filesSelected,  copiedFile, filesToMove;
 bool selectingFiles = true;
 std::array<std::experimental::filesystem::path, 2> rangeSelect;
 
@@ -205,9 +205,9 @@ void deleteFile(){
 
 void copyFile(){
 	std::cout<<"\033[17;0f\033[38;5;5m   Copying... \033[0m(Press 'C' to paste the file)";
-	if(filesSelected.size() > 1) copiedFile = filesSelected;
-	else copiedFile.push_back(std::experimental::filesystem::directory_entry(fileChosen));
+	if(filesSelected.empty()) copiedFile.push_back(std::experimental::filesystem::directory_entry(fileChosen)); return;
 	
+	copiedFile = filesSelected;
 
 	rangeSelect.fill("");
 	filesSelected.erase(filesSelected.begin(), filesSelected.end());
@@ -235,6 +235,21 @@ void pasteFile(){
 	copiedFile.erase(copiedFile.begin(), copiedFile.end());
 	
 	showFiles(actualDirectory);
+}
+
+void moveFile(){
+	if(filesToMove.empty()){
+		std::cout<<"\033[17;0f\033[38;5;15m  (Press 'x' again to finish moving the file)\033[0m";
+		if(filesSelected.size()>1) filesToMove = filesToMove;
+		else filesToMove.push_back(std::experimental::filesystem::directory_entry(fileChosen));
+	}else{
+		std::experimental::filesystem::directory_entry *files = filesToMove.data();
+		
+		for(unsigned i = 0; i<filesToMove.size(); i++) std::experimental::filesystem::rename(files[i], actualDirectory + "/" + files[i].path().filename().string());
+
+		filesToMove.erase(filesToMove.begin(), filesToMove.end());
+		showFiles(actualDirectory);
+	}
 }
 
 void makeDir(){

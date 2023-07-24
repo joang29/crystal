@@ -16,6 +16,7 @@ void renameFile();
 void deleteFile();
 void copyFile();
 void pasteFile();
+void moveFile();
 void makeDir();
 void createFile();
 void selectFiles();
