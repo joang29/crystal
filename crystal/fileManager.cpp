@@ -317,3 +317,9 @@ void commandLine(std::string command, std::string *result){
 	
 	system("stty raw");
 }
+
+void help(){
+	system("clear");
+
+	std::cout<<" Keybindings:\n\r\e[38;5;116m  h, j, k, l\033[0m Navigate\n\r\e[38;5;116m  d\033[0m Open search bar\n\r\e[38;5;116m  z\033[0m Select files\n\r\e[38;5;116m  c\033[0m Copy file\n\r\e[38;5;116m  x\033[0m Move file\n\r\e[38;5;116m  s\033[0m Create file\n\r\e[38;5;116m  S\033[0m Create dir\n\r\e[38;5;116m  f\033[0m Rename file\n\r\e[38;5;116m  X\033[0m Delete file (be careful when deleting a file, there is no way to get it back)\n\r\e[38;5;116m  q\033[0m Close file manager\n\n\r  Press h, j, k or l to return to file manager";
+}

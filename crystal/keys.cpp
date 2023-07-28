@@ -38,7 +38,9 @@ void keys(){
 		if(keyPressed == keys.at("select_file")){ selectFiles(); continue;}
 		
 		if(keyPressed == keys.at("cancel_select_file")){ cancelSelectFiles(); continue;}
-			
+		
+		if(keyPressed == 63){help(); continue;}
+
 		if(keyPressed == keys.at("close")){			
 			 system("stty cooked | clear");
 			 exit(0);

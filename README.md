@@ -30,4 +30,5 @@ To configure crystalfm you should edit the files, ``crystal.conf`` for general u
 |                `S`               | Create dir                                                |
 |                `f`               | Rename file                                               |
 |                `X`               | Delete file                                               |
+|                `?`               | Help                                                      |
 |                `q`               | Close file manager                                        |

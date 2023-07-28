@@ -19,5 +19,6 @@ void createFile();
 void selectFiles();
 void cancelSelectFiles();
 void clearRangeSelect();
+void help();
 
 #endif
