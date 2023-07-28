@@ -2,12 +2,15 @@
 #include<experimental/filesystem>
 #include<sys/stat.h>
 #include<fstream>
-#include<math.h>
 #include<string.h>
 #include<regex>
+#include<array>
+#include <unordered_map>
+#include<math.h>
 
-#include "functions.h"
-#include "config.h"
+#include "previews.h"
+#include "configuration.h"
+
 
 void showFiles(std::string);
 void changeFileChosen(bool);
@@ -32,11 +35,13 @@ void showFiles(std::string directory){
 	bool validEntry = false;
 
 	std::cout<<"\033[1;94m  "<<directory<<"\033[0m\n\n";
+	std::unordered_map<std::string, unsigned int> config = loadConfig("general");
+
 
 	for(const auto & entry : std::experimental::filesystem::directory_iterator(directory)){	
 		i++;
 
-		if(HIDDEN_FILES==1 && (entry.path().filename().string())[0] == '.' || 
+		if(config.at("hidden_files")==1 && (entry.path().filename().string())[0] == '.' || 
 				!inputSearch.empty() && entry.path().filename().string().find(inputSearch) == std::string::npos){
 			i--;
 			continue;
@@ -104,10 +109,10 @@ void showFiles(std::string directory){
 		outputFile = popen(("file '" + fileChosen.string() + "'").c_str(), "r");
 		fgets(output, sizeof(output), outputFile);
 
-		if(strstr(output, "text") && PREVIEW_FILES) showPreviews("textFiles", fileChosen);
-		else if(strstr(output, "image") && PREVIEW_IMAGES) showPreviews("images", fileChosen);
+		if(strstr(output, "text") && config.at("preview_files")==1) showPreviews("textFiles", fileChosen);
+		else if(strstr(output, "image") && config.at("preview_images")==1) showPreviews("images", fileChosen);
 
-	}else if(s.st_mode & S_IFDIR && PREVIEW_DIRECTORIES) showPreviews("directory", fileChosen);
+	}else if(s.st_mode & S_IFDIR && config.at("preview_directories")==1) showPreviews("directory", fileChosen);
 }
 
 void changeFileChosen(bool up){
@@ -131,7 +136,8 @@ void moveAroundFiles(std::string forwardOrBackward){
 	
 	selectingFiles = true;
 	filesSelected.erase(filesSelected.begin(), filesSelected.end());
-	
+	rangeSelect.fill("");
+
 	if(forwardOrBackward == "forward"){
 		struct stat s;
 		stat(fileChosen.c_str(), &s);
@@ -204,14 +210,16 @@ void deleteFile(){
 }
 
 void copyFile(){
-	std::cout<<"\033[17;0f\033[38;5;5m   Copying... \033[0m(Press 'C' to paste the file)";
-	if(filesSelected.empty()) copiedFile.push_back(std::experimental::filesystem::directory_entry(fileChosen)); return;
+	std::cout<<"\033[17;0f\033[38;5;5m   Copying... \033[0m(Press 'C' to paste the file)\033[0;0f";
+	if(filesSelected.empty()){ copiedFile.push_back(std::experimental::filesystem::directory_entry(fileChosen)); return;}
 	
 	copiedFile = filesSelected;
 
-	rangeSelect.fill("");
 	filesSelected.erase(filesSelected.begin(), filesSelected.end());
 	selectingFiles = true;
+	rangeSelect.fill("");
+
+	showFiles(actualDirectory);
 }
 
 void pasteFile(){
@@ -247,7 +255,8 @@ void moveFile(){
 		
 		for(unsigned i = 0; i<filesToMove.size(); i++) std::experimental::filesystem::rename(files[i], actualDirectory + "/" + files[i].path().filename().string());
 
-		filesToMove.erase(filesToMove.begin(), filesToMove.end());
+		filesSelected.erase(filesSelected.begin(), filesSelected.end());
+		
 		showFiles(actualDirectory);
 	}
 }
@@ -256,6 +265,9 @@ void makeDir(){
 	std::string dirName;
 	commandLine("mkdir", &dirName);
 	mkdir((actualDirectory + "/" + dirName).c_str(), 0777);
+	
+	showFiles(actualDirectory);
+
 	std::cout<<"\033[17;0f\033[38;5;5m"<<dirName<<"\033[0m"<<" successfully created";
 }
 

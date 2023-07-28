@@ -1,59 +1,47 @@
-#include "functions.h"
-#include "keys.h"
-
-std::string actualInterface = "directories";
+#include "configuration.h"
+#include "fileManager.h"
+#include<iostream>
+#include<unordered_map>
 
 void keys(){
+	std::unordered_map<std::string,unsigned int> keys = loadConfig("keys");
 	
+	int move_down = 'a';
+
 	while(true){
-		char keyPressed = getchar();
-
-		switch(keyPressed){
-			case MOVE_DOWN: changeFileChosen(false);
-			break;
-
-			case MOVE_UP: changeFileChosen(true);
-			break;
+		int keyPressed = getchar();
 			
-			case MOVE_RIGHT: moveAroundFiles("forward");
-			break;
+		if(keyPressed == keys.at("move_down")){ changeFileChosen(false); continue;}
 
-			case MOVE_LEFT: moveAroundFiles("backward");
-			break;
+		if(keyPressed == keys.at("move_up")){ changeFileChosen(true); continue;}
+			
+		if(keyPressed == keys.at("move_right")){ moveAroundFiles("forward"); continue;}
 
-			case SEARCH: searchBar();
-			break;
+		if(keyPressed == keys.at("move_left")){ moveAroundFiles("backward"); continue;}
+
+		if(keyPressed == keys.at("search")){ searchBar(); continue;}
 		
-			case RENAME_FILE: renameFile();
-			break;
+		if(keyPressed == keys.at("rename_file")){ renameFile(); continue;}
 			
-			case MOVE_FILE: moveFile();
-			break;
+		if(keyPressed == keys.at("move_file")){ moveFile(); continue;}
 
-			case DELETE_FILE: deleteFile();
-			break;
+		if(keyPressed == keys.at("delete_file")){ deleteFile(); continue;}
 		
-			case COPY_FILE: copyFile();
-			break;
+		if(keyPressed == keys.at("copy_file")){ copyFile(); continue;}
 			
-			case PASTE_FILE: pasteFile();
-			break;
+		if(keyPressed == keys.at("paste_file")){ pasteFile(); continue;}
 			
-			case CREATE_DIR: makeDir();
-			break;
+		if(keyPressed == keys.at("create_dir")){ makeDir(); continue;}
 
-			case CREATE_FILE: createFile();
-			break;
+		if(keyPressed == keys.at("create_file")){ createFile(); continue;}
 			
-			case SELECT_FILE: selectFiles();
-			break;
+		if(keyPressed == keys.at("select_file")){ selectFiles(); continue;}
+		
+		if(keyPressed == keys.at("cancel_select_file")){ cancelSelectFiles(); continue;}
 			
-			case CANCEL_SELECT_FILE: cancelSelectFiles();
-			break;
-
-			case 'q': system("stty cooked | clear");
-				  exit(0);
-			break;
+		if(keyPressed == keys.at("close")){			
+			 system("stty cooked | clear");
+			 exit(0);
 		}
 	}
 }

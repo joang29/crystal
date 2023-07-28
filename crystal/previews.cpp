@@ -2,9 +2,9 @@
 #include<string.h>
 #include<experimental/filesystem>
 #include<fstream>
+#include <unordered_map>
 
-#include "functions.h"
-#include "config.h"
+#include "configuration.h"
 
 void showPreviews(std::string, std::string);
 std::string determineTerminal();
@@ -13,6 +13,7 @@ void showPreviews(std::string preview, std::string fileChosen){
 	int i = 0;
 	
 	std::string terminal = determineTerminal();
+	std::unordered_map<std::string, unsigned int> config = loadConfig("general");
 
 	if(preview == "directory"){
 
@@ -20,7 +21,7 @@ void showPreviews(std::string preview, std::string fileChosen){
 		std::cout<<"\r\t\t\t\t\t\t\033[1;93mDirectory preview:\033[0m"<<std::endl;
 
 		for(const auto & entry : std::experimental::filesystem::directory_iterator(fileChosen)){
-			if(HIDDEN_FILES==1 && (entry.path().filename().string())[0] == '.') continue;
+			if(config.at("hidden_files")==1 && (entry.path().filename().string())[0] == '.') continue;
 			
 			std::cout<<"\033["<<3+i<<";0f";
 	

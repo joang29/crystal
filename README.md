@@ -16,10 +16,7 @@ make install
 
 # Configuration
 
-To configure crystalfm you should edit the files, ``config.h`` for general use and ``keys.h`` to modify the keys to your liking (if you have previously installed crystalfm they will be located in ``~/.config/crystal/`` but if not they will be inside the ``crystal-FM/crystal/`` directory), when you finish configuring in the crystal-FM directory run:
-```
-make config
-```
+To configure crystalfm you should edit the files, ``crystal.conf`` for general use and ``keys.conf`` to modify the keys to your liking, they are in the directory ``~/.config/crystal/``, when you finish configuring it just close and open crystalfm again to see the changes.
 
 # Usage
 |               Keys               | Function                                                  |

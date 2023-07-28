@@ -1,15 +1,9 @@
 NAME = crystalfm
 BIN = /usr/local/bin/crystalfm
-SRC = crystal/functions.h crystal/files.cpp crystal/keys.cpp crystal/main.cpp crystal/previews.cpp
+SRC = crystal/fileManager.cpp crystal/keys.cpp crystal/main.cpp crystal/previews.cpp crystal/loadConfiguration.cpp
 DCONF = ${HOME}/.config/crystal/
-CONF = crystal/keys.h crystal/config.h
+CONF = crystal/crystal.conf crystal/keys.conf
 CXX ?= g++
-
-config:
-	cp ${DCONF}/config.h ${CURDIR}/crystal/
-	cp ${DCONF}/keys.h ${CURDIR}/crystal/
-	${CXX} ${SRC} -o ${NAME} -lstdc++fs
-	sudo install -Dm 775 ${NAME} ${BIN}
 
 install:
 	mkdir -p ${DCONF}	

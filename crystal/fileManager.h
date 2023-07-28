@@ -2,12 +2,9 @@
 #define FUNCTIONS
 
 #include<string>
-#include<array>
+#include<vector>
+#include<experimental/filesystem>
 
-//keys.cpp
-void keys();
-
-//showFiles.cpp
 void showFiles(std::string);
 void changeFileChosen(bool);
 void moveAroundFiles(std::string);
@@ -21,11 +18,6 @@ void makeDir();
 void createFile();
 void selectFiles();
 void cancelSelectFiles();
+void clearRangeSelect();
 
-//showPreviews.cpp
-void showPreviews(std::string, std::string);
-
-//settings.cpp
-void createSettings();
-std::array<bool, 4> returnSettings();
 #endif
