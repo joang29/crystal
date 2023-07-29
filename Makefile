@@ -2,7 +2,7 @@ NAME = crystalfm
 BIN = /usr/local/bin/crystalfm
 SRC = crystal/fileManager.cpp crystal/keys.cpp crystal/main.cpp crystal/previews.cpp crystal/loadConfiguration.cpp
 DCONF = ${HOME}/.config/crystal/
-CONF = crystal/crystal.conf crystal/keys.conf
+CONF = crystal/crystal.conf crystal/keys.conf crystal/colorscheme.conf
 CXX ?= g++
 
 install:
