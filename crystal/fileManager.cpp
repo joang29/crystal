@@ -28,15 +28,16 @@ std::vector<std::experimental::filesystem::directory_entry> filesSelected,  copi
 bool selectingFiles = true;
 std::array<std::experimental::filesystem::path, 2> rangeSelect;
 
+std::unordered_map<std::string, unsigned int> config = loadConfig("general");
+std::unordered_map<std::string, unsigned int> colorscheme = loadConfig("colorscheme");
+
+
 void showFiles(std::string directory){
 	system("clear");
 
 	int i = 0;
 	bool validEntry = false;
-
-	std::cout<<"\033[1;94m  "<<directory<<"\033[0m\n\n";
-	std::unordered_map<std::string, unsigned int> config = loadConfig("general");
-
+	std::cout<<"\033[38;5;"<<colorscheme.at("directory_name")<<"m  "<<directory<<"\033[0m\n\n";
 
 	for(const auto & entry : std::experimental::filesystem::directory_iterator(directory)){	
 		i++;
@@ -57,19 +58,19 @@ void showFiles(std::string directory){
 			if(validEntry) filesSelected.push_back(entry);
 		}
 		if(numberOfFileChosen == i || validEntry){ 
-			std::cout<<"\033[1;95m\r > "<<filename<<"\033[0m"<<std::endl;
+			std::cout<<"\033[38;5;"<<colorscheme.at("selected_file")<<"m\r > "<<filename<<"\033[0m"<<std::endl;
 
 			fileChosen = entry.path();
 			selectedFilename = entry.path().filename().string();
 		}
-		else std::cout<<"\r   "<<filename<<std::endl;
+		else std::cout<<"\r \033[38;5;"<<colorscheme.at("unselected_files")<<"m  "<<filename<<"\033[0m"<<std::endl;
 	}
 
 	actualDirectory = directory;
 
 	if(i==0){
 		std::cout<<"\033["<<3<<";0f";
-		inputSearch == "" ? std::cout<<"\033[1;31m\r  empty \033[0m" : std::cout<<"\033[1;31m\r  Nothing found \033[0m";
+		inputSearch == "" ? std::cout<<"\033[38;5;"<<colorscheme.at("error")<<"m\r  empty \033[0m" : std::cout<<"\033[1;31m\r  Nothing found \033[0m";
 		return;
 	}
 	if(numberOfFileChosen>i){
@@ -87,8 +88,8 @@ void showFiles(std::string directory){
 	outputFile = popen(("ls -l " + actualDirectory + " | grep '" + selectedFilename + "'").c_str(), "r");
 	fgets(permissions, sizeof(permissions), outputFile);
 
-	std::cout<<"\r   \033[1;92m"<<permissions<<"\033[0m";
-	std::cout<<"\033[1;36m\r\t\t\t\t\t"<<numberOfFileChosen<<"/"<<i<<"\033[0m";
+	std::cout<<"\r   \033[38;5;"<<colorscheme.at("file_permissions")<<"m"<<permissions<<"\033[0m";
+	std::cout<<"\033[38;5;"<<colorscheme.at("file_number")<<"m\r\t\t\t\t\t"<<numberOfFileChosen<<"/"<<i<<"\033[0m";
 
 	if(s.st_mode & S_IFLNK){
 		char output[100];	
@@ -104,7 +105,7 @@ void showFiles(std::string directory){
 			if(size>4) break;
 		}
 
-		std::cout<<"\r\t\t      \033[1;92m"<<round(fileSize * 100) / 100<<sizes[size]<<"\033[033m";
+		std::cout<<"\r\t\t      \033[38;5;"<<colorscheme.at("file_size")<<"m"<<round(fileSize * 100) / 100<<sizes[size]<<"\033[033m";
 
 		outputFile = popen(("file '" + fileChosen.string() + "'").c_str(), "r");
 		fgets(output, sizeof(output), outputFile);
@@ -159,7 +160,7 @@ void searchBar(){
 	showFiles(actualDirectory);
 
 	std::cout<<"\033["<<17<<";0f";
-	std::cout<<"\r\033[38;5;15m   :search \033[0m\033[38;5;5m"<<inputSearch<<"\033[0m";
+	std::cout<<"\r\033[38;5;"<<colorscheme.at("command_line")<<"m   :search \033[0m\033[38;5;"<<colorscheme.at("input_command_line")<<"m"<<inputSearch<<"\033[0m";
 }
 
 void renameFile(){
@@ -172,7 +173,7 @@ void renameFile(){
 	showFiles(actualDirectory);
 
 	std::cout<<"\033["<<17<<";0f";
-	std::cout<<"\r\033[38;5;15m   :rename \033[0m\033[38;5;5m"<<inputSearch<<"\033[0m";
+	std::cout<<"\r\033[38;5;"<<colorscheme.at("command_line")<<"m   :rename \033[0m\033[38;5;"<<colorscheme.at("input_command_line")<<"m"<<inputSearch<<"\033[0m";
 }
 
 void deleteFile(){
@@ -206,11 +207,11 @@ void deleteFile(){
 
 	std::cout<<"\033["<<17<<";0f";
 	std::cout<<"\033[2K";
-	std::cout<<"\r\033[38;5;5m   '"<<fileToRemove<<"'\033[0m removed";
+	std::cout<<"\r\033[38;5;"<<colorscheme.at("command_finished")<<"m   '"<<fileToRemove<<"'\033[0m removed";
 }
 
 void copyFile(){
-	std::cout<<"\033[17;0f\033[38;5;5m   Copying... \033[0m(Press 'C' to paste the file)\033[0;0f";
+	std::cout<<"\033[17;0f\033[38;5;"<<colorscheme.at("command_finished")<<"m   Copying... \033[0m(Press 'C' to paste the file)\033[0;0f";
 	if(filesSelected.empty()){ copiedFile.push_back(std::experimental::filesystem::directory_entry(fileChosen)); return;}
 	
 	copiedFile = filesSelected;
@@ -224,7 +225,7 @@ void copyFile(){
 
 void pasteFile(){
 	if(copiedFile.empty()){
-		std::cout<<"\033[17;0f\033[1;31m   No file copied\033[0m";
+		std::cout<<"\033[17;0f\033[38;5;"<<colorscheme.at("error")<<"m   No file copied\033[0m";
 		return;
 	}
 	std::experimental::filesystem::directory_entry *files = copiedFile.data();
@@ -237,7 +238,7 @@ void pasteFile(){
 			if(s.st_mode & S_IFDIR)	std::experimental::filesystem::copy(files[i].path(), actualDirectory + "/" + files[i].path().filename().string(), std::experimental::filesystem::copy_options::recursive);
 			else std::experimental::filesystem::copy(files[i], actualDirectory + "/");
 		}catch(std::experimental::filesystem::__cxx11::filesystem_error){
-			std::cout<<"\033[17;0f\033[1;31m   An error occurred while pasting the file\033[0m";
+			std::cout<<"\033[17;0f\033[38;5;"<<colorscheme.at("error")<<"m   An error occurred while pasting the file\033[0m";
 		}
 	}
 	copiedFile.erase(copiedFile.begin(), copiedFile.end());
@@ -247,7 +248,7 @@ void pasteFile(){
 
 void moveFile(){
 	if(filesToMove.empty()){
-		std::cout<<"\033[17;0f\033[38;5;15m  (Press 'x' again to finish moving the file)\033[0m";
+		std::cout<<"\033[17;0f\033[38;5;"<<colorscheme.at("command_line")<<"m  (Press 'x' again to finish moving the file)\033[0m";
 		if(filesSelected.size()>1) filesToMove = filesToMove;
 		else filesToMove.push_back(std::experimental::filesystem::directory_entry(fileChosen));
 	}else{
@@ -268,7 +269,7 @@ void makeDir(){
 	
 	showFiles(actualDirectory);
 
-	std::cout<<"\033[17;0f\033[38;5;5m"<<dirName<<"\033[0m"<<" successfully created";
+	std::cout<<"\033[17;0f\033[38;5;"<<colorscheme.at("command_finished")<<"m"<<dirName<<"\033[0m"<<" successfully created";
 }
 
 void createFile(){
@@ -291,7 +292,7 @@ void selectFiles(){
 		showFiles(actualDirectory);
 		
 		std::cout<<"\033["<<17<<";0f";
-		std::cout<<"\r\033[38;5;15m   [c] Copy [X] delete [Z] cancel";
+		std::cout<<"\r\033[38;5;"<<colorscheme.at("command_line")<<"m   [c] Copy [X] delete [Z] cancel";
 
 		return;
 	}
@@ -309,7 +310,7 @@ void cancelSelectFiles(){
 void commandLine(std::string command, std::string *result){
 	std::cout<<"\033["<<17<<";0f";
 	std::cout<<"\033[2K";
-	std::cout<<"\r\033[38;5;15m   :"<<command<<" \033[0m\033[38;5;5m";	
+	std::cout<<"\r\033[38;5;"<<colorscheme.at("command_line")<<"m   :"<<command<<" \033[0m";	
 
 	system("stty cooked");
 

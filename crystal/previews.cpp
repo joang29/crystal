@@ -9,19 +9,22 @@
 void showPreviews(std::string, std::string);
 std::string determineTerminal();
 
+std::unordered_map<std::string, unsigned int> configPR = loadConfig("general");
+std::unordered_map<std::string, unsigned int> colorschemePR = loadConfig("colorscheme");
+
 void showPreviews(std::string preview, std::string fileChosen){
 	int i = 0;
 	
 	std::string terminal = determineTerminal();
-	std::unordered_map<std::string, unsigned int> config = loadConfig("general");
+	
 
 	if(preview == "directory"){
 
 		std::cout<<"\033["<<2<<";0f";
-		std::cout<<"\r\t\t\t\t\t\t\033[1;93mDirectory preview:\033[0m"<<std::endl;
+		std::cout<<"\r\t\t\t\t\t\t\033[38;5;"<<colorschemePR.at("directory_preview_title")<<"mDirectory preview:\033[0m"<<std::endl;
 
 		for(const auto & entry : std::experimental::filesystem::directory_iterator(fileChosen)){
-			if(config.at("hidden_files")==1 && (entry.path().filename().string())[0] == '.') continue;
+			if(configPR.at("hidden_files")==1 && (entry.path().filename().string())[0] == '.') continue;
 			
 			std::cout<<"\033["<<3+i<<";0f";
 	
@@ -31,11 +34,11 @@ void showPreviews(std::string preview, std::string fileChosen){
 		}
 		if(i==0){
 			std::cout<<"\033["<<3<<";0f";
-			std::cout<<"\r\t\t\t\t\t\t\033[1;31mempty\033[0m"<<std::endl;
+			std::cout<<"\r\t\t\t\t\t\tt\033[38;5;"<<colorschemePR.at("error")<<"mempty\033[0m"<<std::endl;
 		}
 	}else if(preview == "textFiles"){
 		std::cout<<"\033["<<2<<";0f";
-		std::cout<<"\r\t\t\t\t\t\t\033[1;93mFile preview:\033[0m"<<std::endl;
+		std::cout<<"\r\t\t\t\t\t\t\033[38;5;"<<colorschemePR.at("file_preview_title")<<"mFile preview:\033[0m"<<std::endl;
 
 		std::ifstream file(fileChosen);
 		while(file.eof()==0){
@@ -50,8 +53,8 @@ void showPreviews(std::string preview, std::string fileChosen){
 		}
 	}else if(preview == "images"){
 		std::cout<<"\033["<<2<<";0f";
-		std::cout<<"\r\t\t\t\t\t\t\033[1;93mImage preview:\033[0m"<<std::endl;
-		std::cout<<"\r\t\t\t\t\t\t\033[1;31mProcessing...\033[0m"<<std::endl;
+		std::cout<<"\r\t\t\t\t\t\t\033[38;5;"<<colorschemePR.at("image_preview_title")<<"mImage preview:\033[0m"<<std::endl;
+		std::cout<<"\r\t\t\t\t\t\t\033[38;5;"<<colorschemePR.at("error")<<"mProcessing...\033[0m"<<std::endl;
 				
 		if(terminal == "kitty") system(("kitty icat --place 60x60@48x2 '" + fileChosen + "'").c_str());
 		else{

@@ -6,7 +6,7 @@ std::unordered_map<std::string, unsigned int> loadConfig(std::string config){
 	std::string path;
 	if(config == "keys") path = std::string(getenv("HOME")) + "/.config/crystal/keys.conf";
 	else if(config == "general") path = std::string(getenv("HOME")) + "/.config/crystal/crystal.conf";
-	
+	else if(config == "colorscheme") path = std::string(getenv("HOME")) + "/.config/crystal/colorscheme.conf";
 	std::ifstream file(path);
 	
 	std::unordered_map<std::string, unsigned int> configMap;
