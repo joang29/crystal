@@ -2,10 +2,8 @@
 #include<experimental/filesystem>
 #include<sys/stat.h>
 #include<fstream>
-#include<string.h>
 #include<regex>
 #include<array>
-#include <unordered_map>
 #include<math.h>
 
 #include "previews.h"

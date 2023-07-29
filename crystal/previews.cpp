@@ -1,8 +1,6 @@
 #include<iostream>
-#include<string.h>
 #include<experimental/filesystem>
 #include<fstream>
-#include <unordered_map>
 
 #include "configuration.h"
 

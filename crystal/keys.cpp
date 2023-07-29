@@ -1,7 +1,8 @@
+#include<iostream>
+
 #include "configuration.h"
 #include "fileManager.h"
-#include<iostream>
-#include<unordered_map>
+
 
 void keys(){
 	std::unordered_map<std::string,unsigned int> keys = loadConfig("keys");
