@@ -5,6 +5,7 @@
 #include<regex>
 #include<array>
 #include<math.h>
+#include<string.h>
 
 #include "previews.h"
 #include "configuration.h"
