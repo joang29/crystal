@@ -1,5 +1,4 @@
 #include<iostream>
-#include<experimental/filesystem>
 #include<sys/stat.h>
 #include<fstream>
 #include<regex>
@@ -9,7 +8,7 @@
 
 #include "previews.h"
 #include "configuration.h"
-
+#include "icons.h"
 
 void showFiles(std::string);
 void changeFileChosen(bool);
@@ -57,12 +56,12 @@ void showFiles(std::string directory){
 			if(validEntry) filesSelected.push_back(entry);
 		}
 		if(numberOfFileChosen == i || validEntry){ 
-			std::cout<<"\033[38;5;"<<colorscheme.at("selected_file")<<"m\r > "<<filename<<"\033[0m"<<std::endl;
+			std::cout<<"\033[38;5;"<<colorscheme.at("selected_file")<<"m\r > "<<returnIcon(entry.path())<<filename<<"\033[0m"<<std::endl;
 
 			fileChosen = entry.path();
 			selectedFilename = entry.path().filename().string();
 		}
-		else std::cout<<"\r \033[38;5;"<<colorscheme.at("unselected_files")<<"m  "<<filename<<"\033[0m"<<std::endl;
+		else std::cout<<"\r \033[38;5;"<<colorscheme.at("unselected_files")<<"m  "<<returnIcon(entry.path())<<filename<<"\033[0m"<<std::endl;
 	}
 
 	actualDirectory = directory;
