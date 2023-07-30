@@ -1,6 +1,6 @@
 <h1 align=center>crystal-FM</h1>
 
-![image](https://github.com/joang29/crystal/assets/85022759/444826d8-cfba-406e-b507-f52b53d1f32c)
+![image](https://github.com/joang29/crystalfm/assets/85022759/f727b7c1-032e-40bd-afa1-801e657f88e0)
 
 # Dependencies 🗃:
 - [Nerd Font](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/Iosevka)
