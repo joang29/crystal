@@ -10,6 +10,7 @@ void changeFileChosen(bool);
 void moveAroundFiles(std::string);
 void goToTheTop();
 void goToTheBottom();
+void goToTheMiddle();
 void searchBar();
 void renameFile();
 void deleteFile();

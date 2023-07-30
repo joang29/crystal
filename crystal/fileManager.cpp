@@ -122,7 +122,6 @@ void changeFileChosen(bool up){
 		if(numberOfFiles==numberOfFileChosen) return;
 		numberOfFileChosen++;
 		if(numberOfFileChosen >= stopOutput-1) stopOutput++;
-	
 	}else if(numberOfFileChosen != 1){	
 		numberOfFileChosen--;
 		
@@ -165,6 +164,15 @@ void goToTheBottom(){
 	
 	numberOfFileChosen = numberOfFiles;
 	stopOutput = numberOfFiles;
+
+	showFiles(actualDirectory);
+}
+
+void goToTheMiddle(){
+	if(numberOfFiles==0) return;
+
+	numberOfFileChosen = numberOfFiles/2; 
+	stopOutput = numberOfFiles/2+5;
 
 	showFiles(actualDirectory);
 }

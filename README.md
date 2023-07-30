@@ -1,15 +1,27 @@
-<h1 align=center>crystal-FM</h1>
+<h1 align=center>crystalfm</h1>
 
 ![image](https://github.com/joang29/crystalfm/assets/85022759/f727b7c1-032e-40bd-afa1-801e657f88e0)
+
+# Why use crystalfm?
+
+- Fast navigation ⚡
+- Search files in the directory 🔎
+- File operations (rename, move, delete, copy and paste) ✅
+- Create files and directories 🗃️
+- Directory and file preview 📁
+- Image preview (kitty or w3mimgdisplay) 🖼️
+- Custom keybindings ⌨️
+- Custom themes 🟣 🔵 🟢 ⚪
+- File icons 🔲 🔳
 
 # Dependencies 🗃:
 - [Nerd Font](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/Iosevka)
 - **kitty** / **w3mimgdisplay** 
 
 # Installation
-Before installing crystal-fm, please make sure you have all dependencies installed.
+Before installing crystalfm, please make sure you have all dependencies installed.
 
-To install crystal-fm run:
+To install crystalfm run:
 ```
 make install
 ```
@@ -24,6 +36,7 @@ To configure crystalfm you should edit the files, ``colorscheme.conf``, ``crysta
 |          `h` `j` `k` `l`         | Navigate                                                  |
 |                `a`               | Go to the bottom of the directory                         |
 |                `A`               | Go to the top of the directory                            |
+|                `v`               | Go to the middle of the directory                         |
 |                `d`               | Open search bar                                           |
 |                `z`               | Select files                                              |
 |                `c`               | Copy file                                                 |

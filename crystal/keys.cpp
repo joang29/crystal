@@ -23,6 +23,8 @@ void keys(){
 		if(keyPressed == keys.at("go_to_the_top")){goToTheTop(); continue;}
 
 		if(keyPressed == keys.at("go_to_the_bottom")){goToTheBottom(); continue;}
+		
+		if(keyPressed == keys.at("go_to_the_middle")){goToTheMiddle(); continue;}
 
 		if(keyPressed == keys.at("search")){ searchBar(); continue;}
 		
