@@ -14,7 +14,7 @@
 - Custom themes 🟣 🔵 🟢 ⚪
 - File icons 🔲 🔳
 
-# Dependencies 🗃:
+# Dependencies
 - [Nerd Font](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/Iosevka)
 - **kitty** / **w3mimgdisplay** 
 
