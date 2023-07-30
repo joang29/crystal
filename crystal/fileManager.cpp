@@ -185,7 +185,7 @@ void searchBar(){
 	showFiles(actualDirectory);
 
 	std::cout<<"\033["<<17<<";0f";
-	std::cout<<"\r\033[38;5;"<<colorscheme.at("command_line")<<"m   :search \033[0m\033[38;5;"<<colorscheme.at("input_command_line")<<"m"<<inputSearch<<"\033[0m";
+	std::cout<<"\r\033[38;5;"<<colorscheme.at("command_line")<<"m   :search \033[0m\033[38;5;"<<colorscheme.at("command_finished")<<"m"<<inputSearch<<"\033[0m";
 }
 
 void renameFile(){
@@ -335,7 +335,7 @@ void cancelSelectFiles(){
 void commandLine(std::string command, std::string *result){
 	std::cout<<"\033["<<17<<";0f";
 	std::cout<<"\033[2K";
-	std::cout<<"\r\033[38;5;"<<colorscheme.at("command_line")<<"m   :"<<command<<" \033[0m";	
+	std::cout<<"\r\033[38;5;"<<colorscheme.at("command_line")<<"m   :"<<command<<" \033[0m\033[38;5;"<<colorscheme.at("input_command_line");	
 
 	system("stty cooked");
 

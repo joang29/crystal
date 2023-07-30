@@ -26,7 +26,7 @@ void showPreviews(std::string preview, std::string fileChosen){
 			
 			std::cout<<"\033["<<3+i<<";0f";
 	
-			std::cout<<"\r\t\t\t\t\t\t"<<returnIcon(entry.path())<<entry.path().filename().string()<<std::endl;
+			std::cout<<"\r\t\t\t\t\t\t"<<"\033[38;5;"<<colorschemePR.at("directory_preview_files")<<"m"<<returnIcon(entry.path())<<entry.path().filename().string()<<std::endl;
 			i++;
 			if(i>10) break;
 		}
