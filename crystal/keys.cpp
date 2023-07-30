@@ -20,6 +20,10 @@ void keys(){
 
 		if(keyPressed == keys.at("move_left")){ moveAroundFiles("backward"); continue;}
 
+		if(keyPressed == keys.at("go_to_the_top")){goToTheTop(); continue;}
+
+		if(keyPressed == keys.at("go_to_the_bottom")){goToTheBottom(); continue;}
+
 		if(keyPressed == keys.at("search")){ searchBar(); continue;}
 		
 		if(keyPressed == keys.at("rename_file")){ renameFile(); continue;}

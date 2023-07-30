@@ -19,7 +19,7 @@ void copyFile();
 void pasteFile();
 void commandLine(std::string, std::string *);
 
-int numberOfFileChosen = 1, stopOutput = 10;
+int numberOfFileChosen = 1, stopOutput = 10, numberOfFiles = 0;
 std::string actualDirectory, selectedFilename, inputSearch = "";
 std::experimental::filesystem::path fileChosen;
 std::vector<std::experimental::filesystem::directory_entry> filesSelected,  copiedFile, filesToMove;
@@ -77,13 +77,15 @@ void showFiles(std::string directory){
 	}
 	std::cout<<"\033["<<15<<";0f";
 
+	numberOfFiles = i;
+
 	struct stat s;
 	stat(fileChosen.c_str(), &s);	
 
 	FILE *outputFile;
 	char permissions[11];
 
-	outputFile = popen(("ls -l " + actualDirectory + " | grep '" + selectedFilename + "'").c_str(), "r");
+	outputFile = popen(("ls -l '" + actualDirectory + "' | grep '" + selectedFilename + "'").c_str(), "r");
 	fgets(permissions, sizeof(permissions), outputFile);
 
 	std::cout<<"\r   \033[38;5;"<<colorscheme.at("file_permissions")<<"m"<<permissions<<"\033[0m";
@@ -117,12 +119,13 @@ void showFiles(std::string directory){
 void changeFileChosen(bool up){
 	if(filesSelected.size()>1) return; 
 	if(up == false){
+		if(numberOfFiles==numberOfFileChosen) return;
 		numberOfFileChosen++;
 		if(numberOfFileChosen >= stopOutput-1) stopOutput++;
 	
 	}else if(numberOfFileChosen != 1){	
-		if(filesSelected.size()>1)filesSelected.pop_back();
 		numberOfFileChosen--;
+		
 		if(numberOfFileChosen <= stopOutput-9) stopOutput--;
 	}
 	showFiles(actualDirectory);
@@ -148,6 +151,22 @@ void moveAroundFiles(std::string forwardOrBackward){
 		std::experimental::filesystem::path file = actualDirectory;
 		showFiles(file.parent_path());
 	}
+}
+
+void goToTheTop(){
+	numberOfFileChosen = 1;
+	stopOutput = 10;
+	
+	showFiles(actualDirectory);
+}
+
+void goToTheBottom(){
+	if(numberOfFiles==0) return;
+	
+	numberOfFileChosen = numberOfFiles;
+	stopOutput = numberOfFiles;
+
+	showFiles(actualDirectory);
 }
 
 void searchBar(){

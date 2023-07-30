@@ -8,6 +8,8 @@
 void showFiles(std::string);
 void changeFileChosen(bool);
 void moveAroundFiles(std::string);
+void goToTheTop();
+void goToTheBottom();
 void searchBar();
 void renameFile();
 void deleteFile();

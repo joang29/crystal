@@ -22,6 +22,8 @@ To configure crystalfm you should edit the files, ``colorscheme.conf``, ``crysta
 |               Keys               | Function                                                  |
 |:--------------------------------:|-----------------------------------------------------------|
 |          `h` `j` `k` `l`         | Navigate                                                  |
+|                `a`               | Go to the bottom of the directory                         |
+|                `A`               | Go to the top of the directory                            |
 |                `d`               | Open search bar                                           |
 |                `z`               | Select files                                              |
 |                `c`               | Copy file                                                 |

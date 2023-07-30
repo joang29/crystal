@@ -1,8 +1,8 @@
 #include<iostream>
-#include<experimental/filesystem>
 #include<fstream>
 
 #include "configuration.h"
+#include "icons.h"
 
 void showPreviews(std::string, std::string);
 std::string determineTerminal();
@@ -26,7 +26,7 @@ void showPreviews(std::string preview, std::string fileChosen){
 			
 			std::cout<<"\033["<<3+i<<";0f";
 	
-			std::cout<<"\r\t\t\t\t\t\t"<<entry.path().filename().string()<<std::endl;
+			std::cout<<"\r\t\t\t\t\t\t"<<returnIcon(entry.path())<<entry.path().filename().string()<<std::endl;
 			i++;
 			if(i>10) break;
 		}
@@ -59,6 +59,8 @@ void showPreviews(std::string preview, std::string fileChosen){
 			system("tput cup 20 0");
 			system(("echo -e '0;1;288;28;350;200;;;;;" + fileChosen + "\n4;\n3;' | /usr/lib/w3m/w3mimgdisplay").c_str());	
 		}
+
+		std::cout<<"\033[3;0f\r\t\t\t\t\t\t             ";
 	}
 }
 
