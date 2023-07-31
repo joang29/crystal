@@ -28,7 +28,9 @@ make install
 
 # Configuration
 
-To configure crystalfm you should edit the files, ``colorscheme.conf``, ``crystal.conf`` for general use and ``keys.conf`` to modify the keys to your liking, they are in the directory ``~/.config/crystal/``, when you finish configuring it just close and open crystalfm again to see the changes.
+To configure crystalfm you should edit the files, ``crystal.conf`` for general use and ``keys.conf`` to modify the keys to your liking, they are in the directory ``~/.config/crystal/``, when you finish configuring it just close and open crystalfm again to see the changes.
+
+Check [this](https://github.com/joang29/crystalfm/tree/main/crystal/themes) out for custom themes.
 
 # Usage
 |               Keys               | Function                                                  |
