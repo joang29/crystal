@@ -1,6 +1,6 @@
 <h1 align=center>crystalfm</h1>
 
-![image](https://github.com/joang29/crystalfm/assets/85022759/f727b7c1-032e-40bd-afa1-801e657f88e0)
+![image](https://github.com/joang29/crystalfm/assets/85022759/2f559065-a17a-4a68-a333-2ce399b81d19)
 
 # Why use crystalfm?
 
