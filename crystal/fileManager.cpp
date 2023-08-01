@@ -273,7 +273,7 @@ void pasteFile(){
 void moveFile(){
 	if(filesToMove.empty()){
 		std::cout<<"\033[17;0f\033[38;5;"<<colorscheme.at("command_line")<<"m  (Press 'x' again to finish moving the file)\033[0m";
-		if(filesSelected.size()>1) filesToMove = filesToMove;
+		if(filesSelected.size()>1) filesToMove = filesSelected;
 		else filesToMove.push_back(std::experimental::filesystem::directory_entry(fileChosen));
 	}else{
 		std::experimental::filesystem::directory_entry *files = filesToMove.data();
@@ -281,7 +281,8 @@ void moveFile(){
 		for(unsigned i = 0; i<filesToMove.size(); i++) std::experimental::filesystem::rename(files[i], actualDirectory + "/" + files[i].path().filename().string());
 
 		filesSelected.erase(filesSelected.begin(), filesSelected.end());
-		
+		filesToMove.erase(filesToMove.begin(), filesToMove.end());
+
 		showFiles(actualDirectory);
 	}
 }
@@ -316,7 +317,7 @@ void selectFiles(){
 		showFiles(actualDirectory);
 		
 		std::cout<<"\033["<<17<<";0f";
-		std::cout<<"\r\033[38;5;"<<colorscheme.at("command_line")<<"m   [c] Copy [X] delete [Z] cancel";
+		std::cout<<"\r\033[38;5;"<<colorscheme.at("command_line")<<"m   [c] Copy [x] move [X] delete [Z] cancel";
 
 		return;
 	}
