@@ -85,7 +85,9 @@ void showFiles(std::string directory){
 	FILE *outputFile;
 	char permissions[11];
 	
-	outputFile = popen(("ls -l '" + actualDirectory + "' | grep '" + selectedFilename + "'").c_str(), "r");
+	std::string option = config.at("hidden_files")==1 ? "-l" : "-la";
+	outputFile = popen(("ls " + option + " '" + actualDirectory + "' | grep '" + selectedFilename + "'").c_str(), "r");
+				
 	fgets(permissions, sizeof(permissions), outputFile);	
 		
 	std::cout<<"\r   \033[38;5;"<<colorscheme.at("file_permissions")<<"m"<<permissions<<"\033[0m";
