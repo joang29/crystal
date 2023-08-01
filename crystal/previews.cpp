@@ -20,20 +20,21 @@ void showPreviews(std::string preview, std::string fileChosen){
 
 		std::cout<<"\033["<<2<<";0f";
 		std::cout<<"\r\t\t\t\t\t\t\033[38;5;"<<colorschemePR.at("directory_preview_title")<<"mDirectory preview:\033[0m"<<std::endl;
-
-		for(const auto & entry : std::experimental::filesystem::directory_iterator(fileChosen)){
-			if(configPR.at("hidden_files")==1 && (entry.path().filename().string())[0] == '.') continue;
+		try{
+			for(const auto & entry : std::experimental::filesystem::directory_iterator(fileChosen)){
+				if(configPR.at("hidden_files")==1 && (entry.path().filename().string())[0] == '.') continue;
 			
-			std::cout<<"\033["<<3+i<<";0f";
-	
-			std::cout<<"\r\t\t\t\t\t\t"<<"\033[38;5;"<<colorschemePR.at("directory_preview_files")<<"m"<<returnIcon(entry.path())<<entry.path().filename().string()<<std::endl;
-			i++;
-			if(i>10) break;
-		}
-		if(i==0){
-			std::cout<<"\033["<<3<<";0f";
-			std::cout<<"\r\t\t\t\t\t\tt\033[38;5;"<<colorschemePR.at("error")<<"mempty\033[0m"<<std::endl;
-		}
+				std::cout<<"\033["<<3+i<<";0f";
+		
+				std::cout<<"\r\t\t\t\t\t\t"<<"\033[38;5;"<<colorschemePR.at("directory_preview_files")<<"m"<<returnIcon(entry.path())<<entry.path().filename().string()<<std::endl;
+				i++;
+				if(i>10) break;
+			}
+			if(i==0){
+				std::cout<<"\033["<<3<<";0f";
+				std::cout<<"\r\t\t\t\t\t\t\033[38;5;"<<colorschemePR.at("error")<<"mempty\033[0m"<<std::endl;
+			}
+		}catch(std::experimental::filesystem::__cxx11::filesystem_error){std::cout<<"\r\t\t\t\t\t\t\033[38;5;"<<colorschemePR.at("error")<<"mNot user accessible\033[0m"<<std::endl;}
 	}else if(preview == "textFiles"){
 		std::cout<<"\033["<<2<<";0f";
 		std::cout<<"\r\t\t\t\t\t\t\033[38;5;"<<colorschemePR.at("file_preview_title")<<"mFile preview:\033[0m"<<std::endl;
@@ -42,9 +43,9 @@ void showPreviews(std::string preview, std::string fileChosen){
 		while(file.eof()==0){
 			std::string line;
 			getline(file, line);
-			
+				
 			std::cout<<"\033["<<3+i<<";0f";		
-			
+				
 			std::cout<<"\r\t\t\t\t\t\t"<<line<<std::endl;
 			i++;
 			if(i>10) break;

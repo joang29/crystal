@@ -36,34 +36,34 @@ void showFiles(std::string directory){
 	int i = 0;
 	bool validEntry = false;
 	std::cout<<"\033[38;5;"<<colorscheme.at("directory_name")<<"m  "<<directory<<"\033[0m\n\n";
-
-	for(const auto & entry : std::experimental::filesystem::directory_iterator(directory)){	
-		i++;
-
-		if(config.at("hidden_files")==1 && (entry.path().filename().string())[0] == '.' || 
+	try{
+		for(const auto & entry : std::experimental::filesystem::directory_iterator(directory)){	
+			i++;
+		
+			if(config.at("hidden_files")==1 && (entry.path().filename().string())[0] == '.' || 
 				!inputSearch.empty() && entry.path().filename().string().find(inputSearch) == std::string::npos){
-			i--;
-			continue;
-		}
-		if(i>stopOutput || stopOutput-10>i) continue;
-
-		std::string filename = entry.path().filename().string();
-		if(selectingFiles){	
-			if(entry.path() == rangeSelect[0] || entry.path() == rangeSelect[1]){
-					validEntry = !validEntry;
-					if(!validEntry) filesSelected.push_back(entry);
+				i--;
+				continue;
 			}
-			if(validEntry) filesSelected.push_back(entry);
-		}
-		if(numberOfFileChosen == i || validEntry){ 
-			std::cout<<"\033[38;5;"<<colorscheme.at("selected_file")<<"m\r > "<<returnIcon(entry.path())<<filename<<"\033[0m"<<std::endl;
+			if(i>stopOutput || stopOutput-10>i) continue;
+	
+			std::string filename = entry.path().filename().string();
+			if(selectingFiles){	
+				if(entry.path() == rangeSelect[0] || entry.path() == rangeSelect[1]){
+						validEntry = !validEntry;
+						if(!validEntry) filesSelected.push_back(entry);
+				}
+				if(validEntry) filesSelected.push_back(entry);
+			}
+			if(numberOfFileChosen == i || validEntry){ 
+				std::cout<<"\033[38;5;"<<colorscheme.at("selected_file")<<"m\r > "<<returnIcon(entry.path())<<filename<<"\033[0m"<<std::endl;
 
-			fileChosen = entry.path();
-			selectedFilename = entry.path().filename().string();
-		}
-		else std::cout<<"\r \033[38;5;"<<colorscheme.at("unselected_files")<<"m  "<<returnIcon(entry.path())<<filename<<"\033[0m"<<std::endl;
+				fileChosen = entry.path();
+				selectedFilename = entry.path().filename().string();
+			}
+			else std::cout<<"\r \033[38;5;"<<colorscheme.at("unselected_files")<<"m  "<<returnIcon(entry.path())<<filename<<"\033[0m"<<std::endl;
 	}
-
+	}catch(std::experimental::filesystem::__cxx11::filesystem_error){std::cout<<"\033[38;5;"<<colorscheme.at("error")<<"m\r  Not user accessible \033[0m"; actualDirectory=directory; return;}
 	actualDirectory = directory;
 
 	if(i==0){
@@ -84,10 +84,10 @@ void showFiles(std::string directory){
 
 	FILE *outputFile;
 	char permissions[11];
-
+	
 	outputFile = popen(("ls -l '" + actualDirectory + "' | grep '" + selectedFilename + "'").c_str(), "r");
-	fgets(permissions, sizeof(permissions), outputFile);
-
+	fgets(permissions, sizeof(permissions), outputFile);	
+		
 	std::cout<<"\r   \033[38;5;"<<colorscheme.at("file_permissions")<<"m"<<permissions<<"\033[0m";
 	std::cout<<"\033[38;5;"<<colorscheme.at("file_number")<<"m\r\t\t\t\t\t"<<numberOfFileChosen<<"/"<<i<<"\033[0m";
 
@@ -146,10 +146,7 @@ void moveAroundFiles(std::string forwardOrBackward){
 		else{
 		 system(("xdg-open " + fileChosen.string() + "&").c_str());
 		}
-	}else if(forwardOrBackward == "backward"){
-		std::experimental::filesystem::path file = actualDirectory;
-		showFiles(file.parent_path());
-	}
+	}else if(forwardOrBackward == "backward" && std::experimental::filesystem::path(actualDirectory).has_parent_path()) showFiles(std::experimental::filesystem::path(actualDirectory).parent_path());
 }
 
 void goToTheTop(){
@@ -335,7 +332,7 @@ void cancelSelectFiles(){
 void commandLine(std::string command, std::string *result){
 	std::cout<<"\033["<<17<<";0f";
 	std::cout<<"\033[2K";
-	std::cout<<"\r\033[38;5;"<<colorscheme.at("command_line")<<"m   :"<<command<<" \033[0m\033[38;5;"<<colorscheme.at("input_command_line");	
+	std::cout<<"\r\033[38;5;"<<colorscheme.at("command_line")<<"m   :"<<command<<" \033[0m\033[38;5;"<<colorscheme.at("input_command_line")<<"m";	
 
 	system("stty cooked");
 
