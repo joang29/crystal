@@ -1,4 +1,5 @@
 #include<iostream>
+#include <string>
 #include<sys/stat.h>
 #include<fstream>
 #include<regex>
@@ -36,6 +37,7 @@ void showFiles(std::string directory){
 	int i = 0;
 	bool validEntry = false;
 	std::cout<<"\033[38;5;"<<colorscheme.at("directory_name")<<"m  "<<directory<<"\033[0m\n\n";
+
 	try{
 		for(const auto & entry : std::experimental::filesystem::directory_iterator(directory)){	
 			i++;
@@ -78,7 +80,7 @@ void showFiles(std::string directory){
 		numberOfFileChosen=i; 
 		return;
 	}
-	std::cout<<"\033["<<15<<";0f";
+	std::cout<<"\033["<<16<<";0f";
 
 	numberOfFiles = i;
 
@@ -94,7 +96,12 @@ void showFiles(std::string directory){
 	fgets(permissions, sizeof(permissions), outputFile);	
 		
 	std::cout<<"\r   \033[38;5;"<<colorscheme.at("file_permissions")<<"m"<<permissions<<"\033[0m";
-	std::cout<<"\033[38;5;"<<colorscheme.at("file_number")<<"m\r\t\t\t\t\t"<<numberOfFileChosen<<"/"<<i<<"\033[0m";
+	std::cout<<"\033[38;5;"<<colorscheme.at("file_number")<<"m\r\t\t\t\t\t   "<<numberOfFileChosen<<"/"<<i<<"\033[0m";
+	
+	time_t time = s.st_mtime;
+	struct tm *date = localtime(&time);
+	
+	std::string minutes = date->tm_min<=9 ? std::to_string(0) + std::to_string(date->tm_min) : std::to_string(date->tm_min);
 
 	if(s.st_mode & S_IFLNK){
 		char output[100];	
@@ -110,7 +117,9 @@ void showFiles(std::string directory){
 			if(size>4) break;
 		}
 
-		std::cout<<"\r\t\t      \033[38;5;"<<colorscheme.at("file_size")<<"m"<<round(fileSize * 100) / 100<<sizes[size]<<"\033[033m";
+		std::cout<<"\r\t\t\033[38;5;"<<colorscheme.at("file_size")<<"m"<<round(fileSize * 100) / 100<<sizes[size]<<"\033[033m";
+		std::cout<<"   \033[38;5;"<<colorscheme.at("file_modification_date")<<"m"<<date->tm_mon+1<<"/"<<date->tm_mday<<"/"<<date->tm_year+1900<<" "<<date->tm_hour<<":"<<minutes<<"\033[033m";
+
 
 		outputFile = popen(("file '" + fileChosen.string() + "'").c_str(), "r");
 		fgets(output, sizeof(output), outputFile);
@@ -118,7 +127,11 @@ void showFiles(std::string directory){
 		if(strstr(output, "text") && config.at("preview_files")==1) showPreviews("textFiles", fileChosen);
 		else if(strstr(output, "image") && config.at("preview_images")==1) showPreviews("images", fileChosen);
 
-	}else if(s.st_mode & S_IFDIR && config.at("preview_directories")==1) showPreviews("directory", fileChosen);
+	}else if(s.st_mode & S_IFDIR && config.at("preview_directories")==1){ 
+		showPreviews("directory", fileChosen);
+		std::cout<<"\033[16;0f\r\t\t\033[38;5;"<<colorscheme.at("file_modification_date")<<"m"<<date->tm_mon+1<<"/"<<date->tm_mday<<"/"<<date->tm_year+1900<<" "<<date->tm_hour<<":"<<minutes<<"\033[033m";
+	
+	}
 }
 
 void changeFileChosen(bool up){
