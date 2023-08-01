@@ -48,6 +48,9 @@ void showFiles(std::string directory){
 			if(i>stopOutput || stopOutput-10>i) continue;
 	
 			std::string filename = entry.path().filename().string();
+				
+			if(filename.length()>40) filename.resize(40);
+
 			if(selectingFiles){	
 				if(entry.path() == rangeSelect[0] || entry.path() == rangeSelect[1]){
 						validEntry = !validEntry;
