@@ -3,6 +3,11 @@ I have created some themes that I included in this directory, but I invite you t
 
 Here is a preview of the themes:
 
+### gruvbox.conf
+
+![image](https://github.com/joang29/crystalfm/assets/85022759/6f2ed744-e0a7-4f91-8e9e-3de5f9417961)
+
+
 #### green.conf
 
 ![image](https://github.com/joang29/crystalfm/assets/85022759/0912e5a4-975f-414e-b208-1b5a52e2cdbd)
