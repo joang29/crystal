@@ -1,4 +1,5 @@
 #include<iostream>
+#include <stdexcept>
 #include <string>
 #include<sys/stat.h>
 #include<fstream>
@@ -61,8 +62,12 @@ void showFiles(std::string directory){
 				if(validEntry) filesSelected.push_back(entry);
 			}
 			if(numberOfFileChosen == i || validEntry){ 
-				std::cout<<"\033[38;5;"<<colorscheme.at("selected_file")<<"m\r > "<<returnIcon(entry.path())<<filename<<"\033[0m"<<std::endl;
-
+				try{
+					std::cout<<"\r   \033[48;5;"<<colorscheme.at("selected_file_background")<<"m                                           \033[0m";
+					std::cout<<"\r \033[48;5;"<<colorscheme.at("selected_file_background")<<"m\033[38;5;"<<colorscheme.at("selected_file")<<"m  "<<returnIcon(entry.path())<<filename<<"\033[0m"<<std::endl;
+				}catch(std::out_of_range){
+					std::cout<<"\033[0m\r\033[38;5;"<<colorscheme.at("selected_file")<<"m > "<<returnIcon(entry.path())<<filename<<"\033[0m"<<std::endl;
+				}
 				fileChosen = entry.path();
 				selectedFilename = entry.path().filename().string();
 			}
