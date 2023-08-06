@@ -10,6 +10,7 @@
 - Create files and directories 🗃️
 - Directory and file preview 📁
 - Image preview (kitty or w3mimgdisplay) 🖼️
+- Gif preview (only available with kitty) ▶️
 - Custom keybindings ⌨️
 - Custom themes 🟣 🔵 🟢 ⚪
 - File icons 🔲 🔳
