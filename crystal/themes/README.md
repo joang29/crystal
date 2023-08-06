@@ -7,6 +7,13 @@ Here is a preview of the themes:
 
 ![image](https://github.com/joang29/crystalfm/assets/85022759/6f2ed744-e0a7-4f91-8e9e-3de5f9417961)
 
+---
+
+### dracula.conf
+
+![image](https://github.com/joang29/crystalfm/assets/85022759/975a60bb-c03d-4aca-bd0e-0fc01ec4898b)
+
+---
 
 #### green.conf
 

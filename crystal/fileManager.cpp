@@ -247,7 +247,7 @@ void deleteFile(){
 
 	std::cout<<"\033["<<17<<";0f";
 	std::cout<<"\033[2K";
-	std::cout<<"\r\033[38;5;"<<colorscheme.at("command_finished")<<"m   '"<<fileToRemove<<"'\033[0m removed";
+	std::cout<<"\r\033[38;5;"<<colorscheme.at("command_finished")<<"m   '"<<fileToRemove<<"'\033[0m\033[38;5;"<<colorscheme.at("command_line")<<"m removed\033[0m";
 }
 
 void copyFile(){
@@ -310,7 +310,7 @@ void makeDir(){
 	
 	showFiles(actualDirectory);
 
-	std::cout<<"\033[17;0f\033[38;5;"<<colorscheme.at("command_finished")<<"m"<<dirName<<"\033[0m"<<" successfully created";
+	std::cout<<"\033[17;0f\033[38;5;"<<colorscheme.at("command_finished")<<"m"<<dirName<<"\033[0m"<<"\033[38;5;"<<colorscheme.at("command_line")<<"m successfully created\033[0m";
 }
 
 void createFile(){

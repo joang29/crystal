@@ -60,7 +60,7 @@ void showPreviews(std::string preview, std::string fileChosen){
 				
 			std::cout<<"\033["<<3+i<<";0f";		
 				
-			std::cout<<"\r\t\t\t\t\t\t"<<line<<std::endl;
+			std::cout<<"\r\t\t\t\t\t\t\033[38;5;"<<colorschemePR.at("file_preview")<<"m"<<line<<std::endl;
 			i++;
 			if(i>10) break;
 		}
