@@ -6,7 +6,7 @@
 
 - Fast navigation ⚡
 - Search files in the directory 🔎
-- File operations (rename, move, delete, copy and paste) ✅
+- File operations (rename, move, delete, copy, paste, compress and decompress) ✅
 - Create files and directories 🗃️
 - Directory and file preview 📁
 - Image preview (kitty or w3mimgdisplay) 🖼️
