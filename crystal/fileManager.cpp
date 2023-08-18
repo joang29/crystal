@@ -7,6 +7,7 @@
 #include<array>
 #include<math.h>
 #include<string.h>
+#include <unordered_map>
 
 #include "previews.h"
 #include "configuration.h"
@@ -338,7 +339,7 @@ void selectFiles(){
 		showFiles(actualDirectory);
 		
 		std::cout<<"\033["<<17<<";0f";
-		std::cout<<"\r\033[38;5;"<<colorscheme.at("command_line")<<"m   [c] Copy [x] move [X] delete [Z] cancel";
+		std::cout<<"\r\033[38;5;"<<colorscheme.at("command_line")<<"m   [c] Copy [x] move [G] compress [X] delete [Z] cancel";
 
 		return;
 	}
@@ -364,6 +365,64 @@ void commandLine(std::string command, std::string *result){
 	
 	system("stty raw");
 }
+
+void decompressFile(){
+		if(fileChosen.extension().string() == ".tbz" || fileChosen.extension().string() == ".bz2" || 
+		   fileChosen.extension().string() == ".gz" || fileChosen.extension().string() == ".tar"){
+			system(("tar -xf '" + fileChosen.string() + "' -C" + actualDirectory).c_str());
+		}
+		
+		else if(fileChosen.extension().string() == ".zip"){
+			system("stty cooked");
+			system(("unzip -qq '" + fileChosen.string() + "' -d" + actualDirectory).c_str());
+			system("stty raw");
+		}
+		
+		else{
+			std::cout<<"\033[17;0f\r\033[38;5;"<<colorscheme.at("error")<<"m   The file couldn't be decompressed";
+			return;
+		}
+		
+		showFiles(actualDirectory);
+		std::cout<<"\033[17;0f\r\033[38;5;"<<colorscheme.at("command_finished")<<"m   Decompressed file successfully";	
+	
+
+}
+
+void compressFile(){
+	char type;
+
+	std::cout<<"\033["<<17<<";0f\033[2K";
+	std::cout<<"\r\033[38;5;"<<colorscheme.at("command_line")<<"m   compress [1] tar.gz [2] tar.bz2";
+	
+	type = getchar();
+
+	std::experimental::filesystem::directory_entry *data = filesSelected.data(); 
+	std::string allFiles;
+
+	for(int i = 0; i<filesSelected.size(); i++) allFiles = allFiles + "'" + data[i].path().string() + "' ";
+	
+	std::string flags, name;
+
+	switch(type){
+		case '1': flags = " -czf ";
+			name = actualDirectory + "/compressed.tar.gz ";
+			break;
+
+		case '2': flags = " -cjf ";
+			name = actualDirectory + "/compressed.tar.bz2 ";
+			break;
+	}
+	
+	system(("tar " + flags + name + allFiles).c_str());
+
+	filesSelected.erase(filesSelected.begin(), filesSelected.end());
+	selectingFiles = true;
+	rangeSelect.fill("");
+
+	showFiles(actualDirectory);
+}
+
 
 void help(){
 	system("clear");

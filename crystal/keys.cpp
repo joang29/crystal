@@ -6,8 +6,6 @@
 
 void keys(){
 	std::unordered_map<std::string,unsigned int> keys = loadConfig("keys");
-	
-	int move_down = 'a';
 
 	while(true){
 		int keyPressed = getchar();
@@ -46,6 +44,10 @@ void keys(){
 		
 		if(keyPressed == keys.at("cancel_select_file")){ cancelSelectFiles(); continue;}
 		
+		if(keyPressed == keys.at("compress_file")){compressFile(); continue;}
+		
+		if(keyPressed == keys.at("decompress_file")){decompressFile(); continue;}
+
 		if(keyPressed == 63){help(); continue;}
 
 		if(keyPressed == keys.at("close")){			

@@ -22,6 +22,8 @@ void createFile();
 void selectFiles();
 void cancelSelectFiles();
 void clearRangeSelect();
+void compressFile();
+void decompressFile();
 void help();
 
 #endif
