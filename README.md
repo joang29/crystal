@@ -47,6 +47,8 @@ Check [this](https://github.com/joang29/crystalfm/tree/main/crystal/themes) out 
 |                `s`               | Create file                                               |
 |                `S`               | Create dir                                                |
 |                `f`               | Rename file                                               |
+|                `g`               | Compress files                                            |
+|                `G`               | Decompress file                                           |
 |                `X`               | Delete file                                               |
 |                `?`               | Help                                                      |
 |                `q`               | Close file manager                                        |
