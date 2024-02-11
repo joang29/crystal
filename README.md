@@ -17,7 +17,9 @@
 
 # Dependencies
 - [Nerd Font](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/Iosevka)
-- **kitty** / **w3mimgdisplay** 
+- **kitty** / **w3mimgdisplay**
+- **xdg-utils**
+- **unzip (optional)**
 
 # Installation
 Before installing crystalfm, please make sure you have all dependencies installed.
