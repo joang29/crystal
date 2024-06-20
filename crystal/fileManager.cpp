@@ -95,7 +95,7 @@ void showFiles(std::string directory){
 	tabs.at(actualTab-1) = actualDirectory;
 
 	if(i==0){
-		std::cout<<"\033["<<3<<";0f";
+		std::cout<<"\033["<<4<<";0f";
 		inputSearch == "" ? std::cout<<"\033[38;5;"<<colorscheme.at("error")<<"m\r  empty \033[0m" : std::cout<<"\033[1;31m\r  Nothing found \033[0m";
 		return;
 	}
