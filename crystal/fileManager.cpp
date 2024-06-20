@@ -8,6 +8,7 @@
 #include<string.h>
 #include <unordered_map>
 #include<unistd.h>
+#include<sys/ioctl.h>
 
 #include "previews.h"
 #include "configuration.h"
@@ -37,8 +38,13 @@ std::unordered_map<std::string, unsigned int> config = loadConfig("general");
 std::unordered_map<std::string, unsigned int> colorscheme = loadConfig("colorscheme");
 
 void showTabs(){
-	std::cout<<"\033[0;0f   | ";
+	struct winsize terminalSize;
+	ioctl(STDOUT_FILENO, TIOCGWINSZ, &terminalSize);
 
+	std::cout<<"\033[0;"<<terminalSize.ws_col-4<<"f"<<numberOfTabs<<"/5";
+
+	std::cout<<"\033[0;0f   | ";
+	
 	for(int i = 0; i<tabs.size(); i++){
 		if(actualTab-1==i){
 			std::cout<<"\033[38;5;"<<colorscheme.at("actual_tab")<<"m"<<std::experimental::filesystem::path(tabs.at(i)).filename().string()<<"\033[0m | "; 
@@ -193,6 +199,7 @@ void moveAroundFiles(std::string forwardOrBackward){
 }
 
 void createNewTab(){
+	if(numberOfTabs==5) return;
 	char homeDirectory[256];
 	getcwd(homeDirectory, 256);
 	tabs.push_back(homeDirectory);
