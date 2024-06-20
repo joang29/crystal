@@ -6,6 +6,7 @@
 
 - Fast navigation ⚡
 - Search files in the directory 🔎
+- Tabs feature 🪟
 - File operations (rename, move, delete, copy, paste, compress and decompress) ✅
 - Create files and directories 🗃️
 - Directory and file preview 📁
@@ -31,7 +32,7 @@ make install
 
 # Configuration
 
-To configure crystalfm you should edit the files, ``crystal.conf`` for general use and ``keys.conf`` to modify the keys to your liking, they are in the directory ``~/.config/crystal/``, when you finish configuring it just close and open crystalfm again to see the changes.
+To configure crystalfm you should edit the files, ``crystal.conf`` for general use and ``keys.conf`` to modify the keys to your liking (they are in the directory ``~/.config/crystal/``)
 
 Check [this](https://github.com/joang29/crystalfm/tree/main/crystal/themes) out for custom themes.
 
