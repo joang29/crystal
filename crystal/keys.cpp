@@ -1,15 +1,12 @@
-#include<iostream>
-
 #include "configuration.h"
 #include "fileManager.h"
-
 
 void keys(){
 	std::unordered_map<std::string,unsigned int> keys = loadConfig("keys");
 
 	while(true){
 		int keyPressed = getchar();
-			
+
 		if(keyPressed == keys.at("move_down")){ changeFileChosen(false); continue;}
 
 		if(keyPressed == keys.at("move_up")){ changeFileChosen(true); continue;}
@@ -24,6 +21,14 @@ void keys(){
 		
 		if(keyPressed == keys.at("go_to_the_middle")){goToTheMiddle(); continue;}
 
+		if(keyPressed == keys.at("create_tab")){createNewTab(); continue;}
+
+		if(keyPressed == keys.at("close_tab")){closeTab(); continue;}
+	
+		if(keyPressed == keys.at("move_left_tab")){moveAroundTabs("left"); continue;}
+
+		if(keyPressed == keys.at("move_right_tab")){moveAroundTabs("right"); continue;}
+		
 		if(keyPressed == keys.at("search")){ searchBar(); continue;}
 		
 		if(keyPressed == keys.at("rename_file")){ renameFile(); continue;}
@@ -53,6 +58,7 @@ void keys(){
 		if(keyPressed == keys.at("close")){			
 			 system("stty cooked | clear");
 			 exit(0);
+			
 		}
 	}
 }

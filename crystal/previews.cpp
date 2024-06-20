@@ -20,7 +20,7 @@ void showPreviews(std::string preview, std::string fileChosen){
 
 	if(preview == "directory"){
 
-		std::cout<<"\033["<<2<<";0f";
+		std::cout<<"\033["<<3<<";0f";
 		std::cout<<"\r\t\t\t\t\t\t\033[38;5;"<<colorschemePR.at("directory_preview_title")<<"mDirectory preview:\033[0m"<<std::endl;
 		try{
 			for(const auto & entry : std::experimental::filesystem::directory_iterator(fileChosen)){
@@ -33,7 +33,7 @@ void showPreviews(std::string preview, std::string fileChosen){
 				
 				if(filename.length()>=terminalSize.ws_col-51) filename.resize(terminalSize.ws_col-51);
 
-				std::cout<<"\033["<<3+i<<";0f";
+				std::cout<<"\033["<<4+i<<";0f";
 		
 				std::cout<<"\r\t\t\t\t\t\t"<<"\033[38;5;"<<colorschemePR.at("directory_preview_files")<<"m"<<returnIcon(entry.path())<<filename<<std::endl;
 				i++;
@@ -45,7 +45,7 @@ void showPreviews(std::string preview, std::string fileChosen){
 			}
 		}catch(std::experimental::filesystem::__cxx11::filesystem_error){std::cout<<"\r\t\t\t\t\t\t\033[38;5;"<<colorschemePR.at("error")<<"mNot user accessible\033[0m"<<std::endl;}
 	}else if(preview == "textFiles"){
-		std::cout<<"\033["<<2<<";0f";
+		std::cout<<"\033["<<3<<";0f";
 		std::cout<<"\r\t\t\t\t\t\t\033[38;5;"<<colorschemePR.at("file_preview_title")<<"mFile preview:\033[0m"<<std::endl;
 		
 		struct winsize terminalSize;
@@ -58,14 +58,14 @@ void showPreviews(std::string preview, std::string fileChosen){
 
 			if(line.length()>terminalSize.ws_col-48) line.resize(terminalSize.ws_col-48);
 				
-			std::cout<<"\033["<<3+i<<";0f";		
+			std::cout<<"\033["<<4+i<<";0f";		
 				
 			std::cout<<"\r\t\t\t\t\t\t\033[38;5;"<<colorschemePR.at("file_preview")<<"m"<<line<<std::endl;
 			i++;
 			if(i>10) break;
 		}
 	}else if(preview == "images"){
-		std::cout<<"\033["<<2<<";0f";
+		std::cout<<"\033["<<3<<";0f";
 		std::cout<<"\r\t\t\t\t\t\t\033[38;5;"<<colorschemePR.at("image_preview_title")<<"mImage preview:\033[0m"<<std::endl;
 		std::cout<<"\r\t\t\t\t\t\t\033[38;5;"<<colorschemePR.at("error")<<"mProcessing...\033[0m"<<std::endl;
 		

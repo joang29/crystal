@@ -3,11 +3,11 @@
 #include <string>
 #include<sys/stat.h>
 #include<fstream>
-#include<regex>
 #include<array>
 #include<math.h>
 #include<string.h>
 #include <unordered_map>
+#include<unistd.h>
 
 #include "previews.h"
 #include "configuration.h"
@@ -16,29 +16,45 @@
 void showFiles(std::string);
 void changeFileChosen(bool);
 void moveAroundFiles(std::string);
+void createNewTab();
+void closeTab();
+void moveAroundTabs(std::string);
 void searchBar();
 void renameFile();
 void copyFile();
 void pasteFile();
 void commandLine(std::string, std::string *);
 
-int numberOfFileChosen = 1, stopOutput = 10, numberOfFiles = 0;
+int numberOfFileChosen = 1, stopOutput = 10, numberOfFiles = 0, actualTab = 1, numberOfTabs = 0;
 std::string actualDirectory, selectedFilename, inputSearch = "";
 std::experimental::filesystem::path fileChosen;
 std::vector<std::experimental::filesystem::directory_entry> filesSelected,  copiedFile, filesToMove;
 bool selectingFiles = true;
 std::array<std::experimental::filesystem::path, 2> rangeSelect;
+std::vector<std::string> tabs;
 
 std::unordered_map<std::string, unsigned int> config = loadConfig("general");
 std::unordered_map<std::string, unsigned int> colorscheme = loadConfig("colorscheme");
 
+void showTabs(){
+	std::cout<<"\033[0;0f   | ";
+
+	for(int i = 0; i<tabs.size(); i++){
+		if(actualTab-1==i){
+			std::cout<<"\033[38;5;"<<colorscheme.at("actual_tab")<<"m"<<std::experimental::filesystem::path(tabs.at(i)).filename().string()<<"\033[0m | "; 
+			continue;
+		}
+
+		std::cout<<"\033[38;5;"<<colorscheme.at("tabs")<<"m"<<std::experimental::filesystem::path(tabs.at(i)).filename().string()<<"\033[0m | ";
+	}
+}
 
 void showFiles(std::string directory){
 	system("clear");
 
 	int i = 0;
 	bool validEntry = false;
-	std::cout<<"\033[38;5;"<<colorscheme.at("directory_name")<<"m  "<<directory<<"\033[0m\n\n";
+	std::cout<<"\r\033[2;0f\033[38;5;"<<colorscheme.at("directory_name")<<"m  "<<directory<<"\033[0m\n\n";
 
 	try{
 		for(const auto & entry : std::experimental::filesystem::directory_iterator(directory)){	
@@ -76,6 +92,7 @@ void showFiles(std::string directory){
 	}
 	}catch(std::experimental::filesystem::__cxx11::filesystem_error){std::cout<<"\033[38;5;"<<colorscheme.at("error")<<"m\r  Not user accessible \033[0m"; actualDirectory=directory; return;}
 	actualDirectory = directory;
+	tabs.at(actualTab-1) = actualDirectory;
 
 	if(i==0){
 		std::cout<<"\033["<<3<<";0f";
@@ -86,7 +103,9 @@ void showFiles(std::string directory){
 		numberOfFileChosen=i; 
 		return;
 	}
-	std::cout<<"\033["<<16<<";0f";
+	showTabs();
+
+	std::cout<<"\033[16;0f";
 
 	numberOfFiles = i;
 
@@ -171,6 +190,35 @@ void moveAroundFiles(std::string forwardOrBackward){
 		 system(("xdg-open " + fileChosen.string() + "&").c_str());
 		}
 	}else if(forwardOrBackward == "backward" && std::experimental::filesystem::path(actualDirectory).has_parent_path()) showFiles(std::experimental::filesystem::path(actualDirectory).parent_path());
+}
+
+void createNewTab(){
+	char homeDirectory[256];
+	getcwd(homeDirectory, 256);
+	tabs.push_back(homeDirectory);
+
+	numberOfTabs++;
+	actualTab = numberOfTabs;
+
+	showTabs();
+	showFiles(homeDirectory);
+}
+
+void closeTab(){
+	if(numberOfTabs <= 1) return;
+	tabs.erase(tabs.begin()+actualTab-1);
+	
+	if(numberOfTabs == actualTab) actualTab--;
+	numberOfTabs--;
+	showFiles(tabs.at(actualTab-1));
+}
+
+void moveAroundTabs(std::string leftOrRight){
+	if(leftOrRight == "left" && actualTab > 1) actualTab--;
+	else if(leftOrRight == "right" && actualTab<numberOfTabs) actualTab++;
+
+	numberOfFileChosen=1;
+	showFiles(tabs.at(actualTab-1));	
 }
 
 void goToTheTop(){
@@ -427,5 +475,5 @@ void compressFile(){
 void help(){
 	system("clear");
 
-	std::cout<<" Keybindings:\n\r\e[38;5;116m  h, j, k, l\033[0m Navigate\n\r\e[38;5;116m  d\033[0m Open search bar\n\r\e[38;5;116m  z\033[0m Select files\n\r\e[38;5;116m  c\033[0m Copy file\n\r\e[38;5;116m  x\033[0m Move file\n\r\e[38;5;116m  s\033[0m Create file\n\r\e[38;5;116m  S\033[0m Create dir\n\r\e[38;5;116m  f\033[0m Rename file\n\r\e[38;5;116m  X\033[0m Delete file (be careful when deleting a file, there is no way to get it back)\n\r\e[38;5;116m  q\033[0m Close file manager\n\n\r  Press h, j, k or l to return to file manager";
+	std::cout<<" Keybindings:\n\r\e[38;5;116m  h, j, k, l\033[0m Navigate\n\r\e[38;5;116m  t\033[0m Open a new tab\n\r\e[38;5;116m  H\033[0m Move to the left tab\n\r\e[38;5;116m  L\033[0m Move to the right tab\n\r\e[38;5;116m  d\033[0m Open search bar\n\r\e[38;5;116m  z\033[0m Select files\n\r\e[38;5;116m  c\033[0m Copy file\n\r\e[38;5;116m  x\033[0m Move file\n\r\e[38;5;116m  s\033[0m Create file\n\r\e[38;5;116m  S\033[0m Create dir\n\r\e[38;5;116m  f\033[0m Rename file\n\r\e[38;5;116m  X\033[0m Delete file (be careful when deleting a file, there is no way to get it back)\n\r\e[38;5;116m  q\033[0m Close file manager\n\n\r  Press h, j, k or l to return to file manager";
 }

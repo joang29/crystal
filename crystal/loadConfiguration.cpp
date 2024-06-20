@@ -18,10 +18,10 @@ std::unordered_map<std::string, unsigned int> loadConfig(std::string config){
 
 		std::string option;
 		unsigned int value;
-
+		
 		file>>option;
 		file>>value;
-		
+	
 		configMap.insert({{option, value}});
 	}
 	return configMap;

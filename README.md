@@ -42,6 +42,10 @@ Check [this](https://github.com/joang29/crystalfm/tree/main/crystal/themes) out 
 |                `a`               | Go to the bottom of the directory                         |
 |                `A`               | Go to the top of the directory                            |
 |                `v`               | Go to the middle of the directory                         |
+|                `t`               | Open a new tab                                            |
+|                `H`               | Move to the left tab                                      |
+|                `J`               | Move to the right tab                                     |
+|                `D`               | Delete the current tab                                    |
 |                `d`               | Open search bar                                           |
 |                `z`               | Select files                                              |
 |                `c`               | Copy file                                                 |
