@@ -17,6 +17,7 @@
 void showFiles(std::string);
 void changeFileChosen(bool);
 void moveAroundFiles(std::string);
+void goToPath();
 void createNewTab();
 void closeTab();
 void moveAroundTabs(std::string);
@@ -196,6 +197,42 @@ void moveAroundFiles(std::string forwardOrBackward){
 		 system(("xdg-open " + fileChosen.string() + "&").c_str());
 		}
 	}else if(forwardOrBackward == "backward" && std::experimental::filesystem::path(actualDirectory).has_parent_path()) showFiles(std::experimental::filesystem::path(actualDirectory).parent_path());
+}
+
+void goToPath(){
+	std::string directory;
+	std::cout<<"\r\033[2;0f\033[2K\033[38;5;"<<colorscheme.at("directory_name")<<"m  ";
+	
+	system("stty cooked");
+
+	std::cin>>directory;
+	std::cin.ignore();
+	
+	system("stty raw");
+
+	std::cout<<"\033[0m";
+	
+	//eliminating the last '/' to avoid problems when displaying the file name in the tabs;
+	if(directory[directory.length()-1] == '/') directory.erase(directory.length()-1);
+		
+	if(std::experimental::filesystem::exists(directory)){
+		fileChosen = directory;
+		moveAroundFiles("forward");
+
+		//if a file is open this will move the file manager to that directory
+		if(fileChosen != actualDirectory) showFiles(std::experimental::filesystem::path(fileChosen).parent_path().string());
+	}
+	else{ 
+		system("clear");
+		
+		showTabs();	
+
+		std::cout<<"\r\033[2;0f\033[38;5;"<<colorscheme.at("directory_name")<<"m  "<<directory<<"\033[0m";
+		std::cout<<"\r\033[4;0f\033[38;5;"<<colorscheme.at("error")<<"m  Directory or file not found\033[0m";
+	
+		getchar();
+		showFiles(actualDirectory);
+	}
 }
 
 void createNewTab(){

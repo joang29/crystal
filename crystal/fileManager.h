@@ -8,6 +8,7 @@
 void showFiles(std::string);
 void changeFileChosen(bool);
 void moveAroundFiles(std::string);
+void goToPath();
 void goToTheTop();
 void goToTheBottom();
 void goToTheMiddle();

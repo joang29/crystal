@@ -43,6 +43,7 @@ Check [this](https://github.com/joang29/crystalfm/tree/main/crystal/themes) out 
 |                `a`               | Go to the bottom of the directory                         |
 |                `A`               | Go to the top of the directory                            |
 |                `v`               | Go to the middle of the directory                         |
+|                `/`               | Type a path                                               |
 |                `t`               | Open a new tab                                            |
 |                `H`               | Move to the left tab                                      |
 |                `J`               | Move to the right tab                                     |

@@ -14,6 +14,8 @@ void keys(){
 		if(keyPressed == keys.at("move_right")){ moveAroundFiles("forward"); continue;}
 
 		if(keyPressed == keys.at("move_left")){ moveAroundFiles("backward"); continue;}
+		
+		if(keyPressed == keys.at("type_file")){goToPath(); continue;}
 
 		if(keyPressed == keys.at("go_to_the_top")){goToTheTop(); continue;}
 

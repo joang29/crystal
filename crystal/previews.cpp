@@ -40,7 +40,7 @@ void showPreviews(std::string preview, std::string fileChosen){
 				if(i>10) break;
 			}
 			if(i==0){
-				std::cout<<"\033["<<3<<";0f";
+				std::cout<<"\033["<<4<<";0f";
 				std::cout<<"\r\t\t\t\t\t\t\033[38;5;"<<colorschemePR.at("error")<<"mempty\033[0m"<<std::endl;
 			}
 		}catch(std::experimental::filesystem::__cxx11::filesystem_error){std::cout<<"\r\t\t\t\t\t\t\033[38;5;"<<colorschemePR.at("error")<<"mNot user accessible\033[0m"<<std::endl;}
