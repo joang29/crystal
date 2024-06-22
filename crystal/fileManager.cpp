@@ -194,7 +194,7 @@ void moveAroundFiles(std::string forwardOrBackward){
 		stat(fileChosen.c_str(), &s);
 		if(s.st_mode & S_IFDIR) showFiles(fileChosen);
 		else{
-		 system(("xdg-open " + fileChosen.string() + "&").c_str());
+		 system(("xdg-open " + fileChosen.string()).c_str());
 		}
 	}else if(forwardOrBackward == "backward" && std::experimental::filesystem::path(actualDirectory).has_parent_path()) showFiles(std::experimental::filesystem::path(actualDirectory).parent_path());
 }
